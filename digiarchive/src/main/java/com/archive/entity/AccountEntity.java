@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * The persistent class for the account database table.
@@ -25,8 +26,8 @@ public class AccountEntity extends AbstractEntity{
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", nullable = false)
     private CustomerEntity customer;
-    private LocalDate creating_date;
-    private String user_id;
+    private LocalDate  creating_date;
+    private Integer user_id;
     @Column(name = "status", nullable = false)
     private EventStatus status;
 

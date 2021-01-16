@@ -8,6 +8,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * The persistent class for the contract database table.
@@ -34,7 +35,7 @@ public class ContractEntity extends AbstractEntity{
     @Column(name = "creating_date", nullable = false)
     private LocalDate creating_date;
     @Column(name = "user_id", nullable = false)
-    private String user_id;
+    private Integer user_id;
     @Column(name = "status", nullable = false)
     private EventStatus status;
 

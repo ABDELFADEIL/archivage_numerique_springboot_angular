@@ -11,7 +11,7 @@ import com.archive.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Integer>{
 
     @Query("select u from UserEntity u where u.email=:email or u.UID=:email")
-    public UserEntity searchUserByEmailOrUID(@Param("email") String s);
-    public UserEntity findByEmail(String emai);
-    public UserEntity findByUID(String UID);
+     UserEntity searchUserByEmailOrUID(@Param("email") String s);
+     UserEntity findByEmail(String emai);
+     UserEntity findByUID(String UID);
 }

@@ -1,6 +1,7 @@
 package com.archive.dto.in;
 
 
+import com.archive.entity.AbstractEntity;
 import com.archive.entity.RoleEntity;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
@@ -16,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter @ToString
-public class UserDtoIn implements Serializable {
+public class UserDtoIn extends AbstractEntity {
 
     private String lastName;
     private String firstName;

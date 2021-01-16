@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class ContextEntity extends AbstractEntity{
     @Column(name = "final_hold_date")
     private LocalDateTime final_hold_date;
     @Column(name = "deletion_date")
-    private LocalDateTime deletion_date;
+    private LocalDate deletion_date;
     @LazyCollection(LazyCollectionOption.TRUE)
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "context_has_event", joinColumns = {

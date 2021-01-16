@@ -1,5 +1,6 @@
 package com.archive.dto;
 
+import com.archive.entity.AbstractEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ContextDtoIn implements Serializable {
+public class ContextDtoIn extends AbstractEntity {
 
     private String conserv_unit_id;
     private String mine_type;

@@ -1,5 +1,6 @@
 package com.archive.dto;
 
+import com.archive.entity.AbstractEntity;
 import lombok.*;
 
 import java.util.Date;
@@ -9,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class DocumentDto {
+public class DocumentDto extends AbstractEntity {
 
     private String document_id;
     private String conserv_unit_id;

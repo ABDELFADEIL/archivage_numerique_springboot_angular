@@ -35,6 +35,8 @@ public class DocumentServiceImpl implements IDocumentService{
     private final IClassificationNatureService classificationNatureService;
     private final IEventService eventService;
 
+
+
     public DocumentServiceImpl(
             DigitalDocumentRepository digitalDocumentRepository,
             IContextService contextService,
@@ -43,7 +45,8 @@ public class DocumentServiceImpl implements IDocumentService{
             IContractService contractService,
             IUserService userService,
             IClassificationNatureService classificationNatureService,
-            IEventService eventService)
+            IEventService eventService
+    )
     {
         this.digitalDocumentRepository = digitalDocumentRepository;
         this.contextService = contextService;
@@ -72,16 +75,15 @@ public class DocumentServiceImpl implements IDocumentService{
             final_stage_date = documentDtoIn.getContextDtoIn().getFinal_business_processing_date().plusYears(classificationNatureEntity.getDuration());
         }
 
-
         ContextEntity contextEntity = new ContextEntity(null, documentDtoIn.getContextDtoIn().getMine_type(), final_stage_date,
                 LocalDateTime.now(),  documentDtoIn.getContextDtoIn().getFinal_business_processing_date(),
                 null, false, false, null, null, eventEntitySet,userId, customerEntity,
                 contractEntity, accountEntity, classificationNatureEntity);
+        ContextEntity context = contextService.add(contextEntity);
 
-
-
-
-        return null;
+        DigitalDocumentEntity digitalDocumentEntity = new DigitalDocumentEntity(documentDtoIn.getFile_name(), "file",
+                documentDtoIn.getEncodedDoc(), context );
+        return digitalDocumentRepository.save(digitalDocumentEntity);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class CustomerEntity extends AbstractEntity{
     @Column(name = "siret_number", nullable = true)
     private String siret_number;
     @Column(name = "user_id", nullable = false)
-    private String user_id;
+    private Integer user_id;
     @Column(name = "status", nullable = false)
     private EventStatus status;
 
