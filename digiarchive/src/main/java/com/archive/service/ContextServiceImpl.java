@@ -21,7 +21,28 @@ public class ContextServiceImpl implements IContextService{
     }
 
     @Override
+    public ContextEntity update(ContextEntity contextEntity) {
+        return contextRepository.save(contextEntity);
+    }
+
+    @Override
     public ContextEntity findById(Integer contextEntityId) {
         return contextRepository.findById(contextEntityId).get();
+    }
+
+    @Override
+    public boolean deleteById(Integer contextEntityId) {
+        try{
+            contextRepository.deleteById(contextEntityId);
+            return true;
+        }catch (Exception e){
+
+        }
+        return false;
+    }
+
+    @Override
+    public ContextEntity save(ContextEntity contextEntity) {
+        return contextRepository.save(contextEntity);
     }
 }

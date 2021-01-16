@@ -30,8 +30,8 @@ public interface ContractRepository extends JpaRepository<ContractEntity, Intege
     @Query(value="select * from  contract where contract.event in (select id_event from  event where event_type=:status and event_date between :dateAfter and :dateBefor)", nativeQuery=true)
     Set<ContractEntity> findContractsByEventStatusAndEventDateAfterAndDateBefor(@Param("status") String status, @Param("dateAfter") LocalDate dateAfter, @Param("dateBefor") LocalDate dateBefor);
 
-     @Query("select contract from ContractEntity contract where contract.customer.id like %:customer_id%")
-     ContractEntity findByCustomer(@Param("customer_id")String customer_id);
+     @Query("select contract from ContractEntity contract where contract.customer.id=:customer_id")
+     ContractEntity findByCustomer(@Param("customer_id")Integer customer_id);
 
     @Query("select contract from ContractEntity contract where  contract.contract_number like %:contract_number% or (contract.customer.client_name like %:client_name% or contract.customer.client_first_name like %:client_name%)")
     Set<ContractEntity> getContractsByClientNameAndContractNumberContains(@Param("client_name") String client_name, @Param("contract_number") String contract_number);

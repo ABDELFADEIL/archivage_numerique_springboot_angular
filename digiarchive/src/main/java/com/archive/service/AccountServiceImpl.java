@@ -29,10 +29,6 @@ public class AccountServiceImpl implements IAccountService{
         return accountRepository.findById(accountId).get();
     }
 
-    @Override
-    public List<AccountEntity> getAll() {
-        return accountRepository.findAll();
-    }
 
     @Override
     public AccountEntity add(AccountDto accountDto) {

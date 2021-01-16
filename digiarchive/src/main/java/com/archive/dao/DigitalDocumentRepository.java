@@ -1,5 +1,6 @@
 package com.archive.dao;
 
+import com.archive.dto.DocumentDto;
 import com.archive.entity.DigitalDocumentEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.archive.entity.UserEntity;
 
 import javax.persistence.QueryHint;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,7 +23,6 @@ import static org.hibernate.jpa.QueryHints.HINT_PASS_DISTINCT_THROUGH;
 @Repository
 public interface DigitalDocumentRepository extends JpaRepository<DigitalDocumentEntity, Integer>{
 
-    /*
     @Query(value="select doc from DigitalDocumentEntity doc")
     @QueryHints(value={ @QueryHint(name= HINT_FETCH_SIZE, value=""+Integer.MIN_VALUE), @QueryHint(name = HINT_PASS_DISTINCT_THROUGH, value = "false")})
     public Page<DigitalDocumentEntity> getAllDocs(Pageable pageable);
@@ -35,19 +36,18 @@ public interface DigitalDocumentRepository extends JpaRepository<DigitalDocument
     //@QueryHints(value= {@QueryHint(name= HINT_FETCH_SIZE, value=""+Integer.MIN_VALUE), @QueryHint(name = HINT_PASS_DISTINCT_THROUGH, value = "false")})
     //public List<DigitalDocument> getAllMetadata();
 
-    @Query(value="select doc from DigitalDocument doc")
+    @Query(value="select doc from DigitalDocumentEntity doc")
     @QueryHints(value= {@QueryHint(name= HINT_FETCH_SIZE, value=""+Integer.MIN_VALUE), @QueryHint(name = HINT_PASS_DISTINCT_THROUGH, value = "false")})
     public Stream<DigitalDocumentEntity> getAllDocsStream();
     @Query(value = "SELECT * FROM digital_document WHERE digital_document.context in(SELECT c.context_id FROM context c WHERE c.contract=:contract_id)", nativeQuery = true)
-    List<DigitalDocumentEntity> getDocsContractById(@Param("contract_id") String contract_id);
+    List<DigitalDocumentEntity> getDocsContractById(@Param("contract_id") Integer contract_id);
     @Query(value = "SELECT * FROM digital_document WHERE digital_document.context in(SELECT c.context_id FROM context c WHERE c.account=:account_id)", nativeQuery = true)
-    List<DigitalDocumentEntity> getDocsAccountById(@Param("account_id") String account_id);
+    List<DigitalDocumentEntity> getDocsAccountById(@Param("account_id") Integer account_id);
     @Query(value = "SELECT * FROM digital_document WHERE digital_document.context in(SELECT c.context_id FROM context c WHERE c.client=:client_id)", nativeQuery = true)
     List<DigitalDocumentEntity> getDocsClientById(@Param("client_id") String client_id);
 
     @Query(value = "select doc.* from digital_document doc WHERE doc.context in (select c.context_id from context c INNER JOIN event e On e.id_event=c.event WHERE c.client=:client_id AND e.event_type=:eventType AND c.account IS NULL AND c.contract IS NULL)", nativeQuery = true)
     List<DigitalDocumentEntity> findByEventTypeAndClientId(@Param("eventType") String eventType, @Param("client_id") String client_id);
 
-     */
-
+    // List<DigitalDocumentEntity> getDocumentDfbmIsNullArchivingDateBefore(LocalDateTime dateBefore);
 }

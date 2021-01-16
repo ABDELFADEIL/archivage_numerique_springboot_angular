@@ -1,21 +1,20 @@
 package com.archive.dto;
 
 import com.archive.entity.AbstractEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 public class ContextDtoIn extends AbstractEntity {
 
     private String conserv_unit_id;
     private String mine_type;
-    private LocalDateTime final_stage_date;
     private LocalDateTime archiving_reference_date;
     private LocalDateTime final_business_processing_date;
     private String frozen_label;
@@ -33,4 +32,6 @@ public class ContextDtoIn extends AbstractEntity {
     private Integer contractId;
 
     private Integer accountId;
+
+
 }

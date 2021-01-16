@@ -67,7 +67,7 @@ public class ContractServiceImpl implements IContractService{
     @Override
     public boolean delete(Integer contractId) {
         try {
-
+            contractRepository.deleteById(contractId);
             return true;
         }catch (Exception e){
 

@@ -1,8 +1,6 @@
 package com.archive.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -19,7 +17,7 @@ import java.util.Set;
 @Table(name = "context")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter @Setter @ToString
 public class ContextEntity extends AbstractEntity{
 
     private String conserv_unit_id;
@@ -37,7 +35,7 @@ public class ContextEntity extends AbstractEntity{
     @Column(name = "final_hold_date")
     private LocalDateTime final_hold_date;
     @Column(name = "deletion_date")
-    private LocalDate deletion_date;
+    private LocalDateTime deletion_date;
     @LazyCollection(LazyCollectionOption.TRUE)
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "context_has_event", joinColumns = {
@@ -58,5 +56,6 @@ public class ContextEntity extends AbstractEntity{
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "classification_nature_id", nullable = false)
     private ClassificationNatureEntity classification_nature;
+
 
 }
