@@ -1,0 +1,80 @@
+<div class="container-fluid" style="padding: 10px; margin-left: 30px">
+
+
+
+
+    <div class="col-md-8">
+      <form class=""  (ngSubmit)="onSubmit(client_name, contract_number)">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label  class="col-form-label">Nom client</label>
+            <input type="text" class="form-control" name="client_name" [(ngModel)]="client_name">
+          </div>
+
+          <div class="form-group col-md-1 align-self-end">
+            <P class="">OU/ET</P>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label  class="col-form-label">Numéro de contrat</label>
+            <input type="text" class="form-control" name="contract_number" [(ngModel)]="contract_number">
+          </div>
+          <div class="form-group col-md-2 align-self-end">
+            <button class="btn btn-light my-2 my-sm-0" style="background: #dee6f9" type="submit">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+
+  <div class="row spacer" style="margin-top: 70px">
+
+    <div class="col-md-9">
+      <!-- table 2 -->
+
+      <table class="table table-hover" *ngIf="chercher">
+        <thead *ngIf="contracts.length > 0 || contracts">
+        <tr>
+          <th class="table-th" scope="col"></th>
+          <th class="table-th"  scope="col">Client nom</th>
+          <th class="table-th" scope="col">Client prénom</th>
+          <th class="table-th" scope="col">Date naissance</th>
+          <th class="table-th" scope="col">Numéro de contrat</th>
+          <th class="table-th" scope="col"></th>
+          <th class="table-th" scope="col"></th>
+
+        </tr>
+        </thead>
+        <tbody *ngIf="contracts">
+        <tr *ngFor="let c of contracts | slice: (page-1) * size : (page-1) * size + size;" id="to-hover">
+          <td ></td>
+          <td >{{c.contact_id}}</td>
+          <td >{{c.contract_id_type_label}}</td>
+          <td >{{c.creating_date | date : 'dd/MM/yyyy'  : 'locale' }}</td>
+          <td >{{c.contract_number}}</td>
+          <td scope="col" (click)="openFormModal(c, 'update')"   >
+           <p id="to-show1" style="font-size: small" class="text-primary">Mise à jour</p>
+          </td>
+          <td scope="col" (click)="openFormModal(c, 'add')"  >
+             <p id="to-show" style="font-size: small" class="text-primary">Ajouter docs</p>
+          </td>
+
+        </tr>
+        </tbody>
+        <tbody *ngIf="contracts.length == 0 || !contracts">
+        <tr> <td colspan="7" class="alert alert-danger text-center" style="border-radius: 0"><div>Il n'a aucun elements!</div></td></tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between p-2" *ngIf="contracts && chercher && contracts.length > 0">
+        <ngb-pagination [collectionSize]="contracts.length" [(page)]="page" [maxSize]="size" [pageSize]="size" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="onSubmit(client_name, contract_number)">
+        </ngb-pagination>
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div>

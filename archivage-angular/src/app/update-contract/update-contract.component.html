@@ -1,0 +1,107 @@
+
+<div class="card">
+<div >
+  <div class="row card-header justify-content-between ">
+
+    <h4 class=" text-center" *ngIf="action == 'update'">Mis à jour contrat </h4>
+    <h4 class=" text-center" *ngIf="action == 'add'">Ajouter des documents </h4>
+    <button class="btn  bg-light">
+      <i class="fa fa-window-close"  (click)="activeModal.dismiss('Cross click')"></i>
+    </button>
+  </div>
+
+  <div class="card-body" *ngIf="action == 'update'">
+
+    <form class="spacer"  (ngSubmit)="onSubmit()">
+        <div class="row form">
+        <div class="col-sm-12">
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-sm-4">
+                <p class="float-right">Nom de cient:</p>
+              </div>
+              <div class="col-sm-6">
+                <p class="">{{contract.client.client_name +' '+ contract.client.client_first_name}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-sm-4">
+                <p class="float-right">Numéro de contrat:</p>
+              </div>
+              <div class="col-sm-6">
+                <p class="">{{contract.contract_number}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-sm-4">
+                <p class="col-form-label float-right">Libellé de contract:</p>
+              </div>
+              <div class="col-sm-6">
+                <p class="">{{contract.contract_id_type_label}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group row">
+              <div class="col-sm-4">
+                <label  class="col-form-label float-right">Statut de contract</label>
+              </div>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="status" [(ngModel)]="contract.status">
+              </div>
+
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="contact_id" [(ngModel)]="contract.contract_id">
+
+
+          <div class="row">
+            <div class="col-md-6 text-center">
+              <button type="submit" class="btn btn-l" style="background: #dee6f9;"> Enoyer</button>
+            </div>
+            <div class="col-md-6 text-center">
+              <button type="button" class="btn btn-l btn-outline-danger" style="" (click)="activeModal.dismiss('Close clicked')"> annuler</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+</div>
+
+<div class="card-body" *ngIf="action == 'add'">
+  <h4>Nom de cient: {{contract.client.client_name +' '+ contract.client.client_first_name}}</h4>
+  <h4>Libellé de contrat: {{contract.contract_id_type_label}}</h4>
+  <h4>Numéro de contrat: {{contract.contract_number}}</h4>
+  <div class="container-fluid">
+
+    <div class="col-md-12">
+      <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+        <input hidden name="files" type="file" #fileInput (change)="uploadFile($event.target.files)" ngModel>
+      </div>
+      <div  class="files-list" *ngFor="let file of files;let i=index">
+        <p>{{ file.name }}</p>
+        <button class="delete-file" (click)="deleteAttachment(i)">
+          <img src="../../../assets/Recycle_Bin_Full.png">
+        </button>
+      </div>
+    </div>
+      <input type="hidden" class="form-control" name="contract_id" [(ngModel)]="contract.contract_id">
+    <div class="col-md-12 text-center">
+      <button type="submit" class="btn btn-l col-md-6" style="background: #dee6f9;" [disabled]="files.length == 0" (click)="addDocs()"> Enoyer</button>
+    </div>
+
+  </div>
+
+</div>
+

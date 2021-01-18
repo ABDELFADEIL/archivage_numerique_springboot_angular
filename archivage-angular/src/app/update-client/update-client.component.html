@@ -1,0 +1,80 @@
+<div class="card">
+  <div >
+    <div class="row card-header justify-content-between ">
+
+      <h4 class=" text-center" >Mis à jour statut client </h4>
+      <button class="btn  bg-light">
+        <i class="fa fa-window-close"  (click)="activeModal.dismiss('Cross click')"></i>
+      </button>
+    </div>
+
+    <div class="card-body">
+
+      <form class="spacer"  (ngSubmit)="onSubmit()">
+        <div class="row form">
+          <div class="col-sm-12">
+            <div class="col-md-12">
+              <div class="form-group row">
+                <div class="col-sm-4">
+                  <p class="float-right">Nom de cient:</p>
+                </div>
+                <div class="col-sm-6">
+                  <p class="">{{client.client_name +' '+ client.client_first_name}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row">
+                <div class="col-sm-4">
+                  <p class="float-right">Numéro de client:</p>
+                </div>
+                <div class="col-sm-6">
+                  <p class="">{{client.client_number}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row">
+                <div class="col-sm-4">
+                  <p class="col-form-label float-right">Nature de client:</p>
+                </div>
+                <div class="col-sm-6">
+                  <p class="">{{client.client_nature_id}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row">
+                <div class="col-sm-4">
+                  <label  class="col-form-label float-right">Statut de client</label>
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="status" [(ngModel)]="client.status">
+                </div>
+
+              </div>
+            </div>
+            <input type="hidden" class="form-control" name="client_id" [(ngModel)]="client.id">
+
+
+            <div class="row">
+              <div class="col-md-6 text-center">
+                <button type="submit" class="btn btn-l" style="background: #dee6f9;"> Enoyer</button>
+              </div>
+              <div class="col-md-6 text-center">
+                <button type="button" class="btn btn-l btn-outline-danger" style="" (click)="activeModal.dismiss('Close clicked')"> annuler</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,155 @@
+<div class="container" style="padding: 10px;">
+<div *ngIf="!created">
+  <form *ngIf="form" class="spacer" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row form">
+
+
+        <div class="col-md-6">
+          <div class="form-group row">
+          <div class="col-sm-4">
+            <label  class="col-form-label float-right">Nom</label>
+          </div>
+            <div class="col-sm-6">
+            <input id="client_name" type="text" class="form-control" formControlName="client_name">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group row">
+          <div class="col-sm-4">
+            <label class="col-form-label float-right">First name </label>
+          </div>
+            <div class="col-sm-6">
+            <input type="text" class="form-control" formControlName="client_first_name">
+              <div class="invalid-tooltip">
+                Prénom est oubligatoir.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-4">
+              <label  class="col-form-label float-right">Nature de client </label>
+            </div>
+            <div class="col-sm-6">
+              <select formControlName="client_nature_id"  class="form-control">
+                <option value="">select...</option>
+                <option value="1">Personne physique</option>
+                <option value="2">personne morale</option>
+              </select>
+              <div class="invalid-tooltip">
+                Selection oubligatoire.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group row">
+          <div class="col-sm-4">
+            <label class="col-form-label float-right">Id civility</label>
+          </div>
+            <div class="col-sm-6">
+              <select class="form-control" formControlName="civility_id">
+                <option value="">select...</option>
+                <option value="1">Monsieur</option>
+                <option value="2">Madame</option>
+                <option value="3">Demoiselle</option>
+              </select>
+              <div class="invalid-tooltip">
+                Oubligatoire.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+              <div class="form-group row">
+              <div class="col-sm-4">
+                <label class="col-form-label float-right">Date de naissance</label>
+              </div>
+                <div class="col-sm-6">
+                <input type="date" class="form-control" formControlName="birth_date">
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group row">
+              <div class="col-sm-4">
+                <label for="typeahead-format" class="col-form-label float-right">Dept de naissance</label>
+              </div>
+                <div class="col-sm-6">
+                <input type="text" class="form-control" formControlName="birth_dept" id="typeahead-format" [(ngModel)]="modelDep" [ngbTypeahead]="searchDep"/>
+                </div>
+              </div>
+            </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-4">
+              <label class="col-form-label float-right">Numéro Siren </label>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" formControlName="siren_number">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-4">
+              <label class="col-form-label float-right">Numéro Siret</label>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" formControlName="siret_number">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+                <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+                    <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+                  </div>
+                    <div  class="files-list" *ngFor="let file of documentService.files;let i=index">
+                      <p>{{ file.name }}</p>
+                      <button class="delete-file" (click)="deleteAttachment(i)">
+                        <img src="../../../assets/Recycle_Bin_Full.png">
+                      </button>
+                    </div>
+                 </div>
+
+        <div class="col-md-12 text-center">
+          <button type="submit" class="btn btn-l col-md-6" style="background: #dee6f9;" [disabled]="form.invalid"> Enoyer</button>
+        </div>
+
+      </div>
+  </form>
+</div>
+
+<div *ngIf="created" class="container spacer">
+  <div >
+    <h2 class="text-center text-lg-center text-primary" style="font-weight: normal">Création d'un nouveau client avec succès!</h2>
+    <div  *ngIf="client">
+      <div >
+        <p><span class="h6">Nom: </span> {{client.client_name}}</p>
+        <p><span class="h6">Prénom: </span> {{client.client_first_name}}</p>
+        <p><span class="h6">Departement naissance: </span> {{client.birth_dept}}</p>
+        <p><span class="h6">Date naissance: </span> {{client.birth_date | date : 'mediumDate'  : 'locale'  }}</p>
+      </div>
+    </div>
+    <div class=" spacer">
+
+      <div class="col-md-12 text-center mr-auto">
+        <button type="submit" class="btn btn-l col-sm-5" [routerLink]="'/new-contract'" style="background: #dee6f9;"> Nouveau contrat</button>
+
+        <button  type="submit" class="btn btn-l col-sm-5" [routerLink]="'/new-account'" style="background: #dee6f9;margin-left:10px"> Nouveau compte</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>

@@ -1,0 +1,97 @@
+
+<div class="card">
+  <div >
+    <div class="row card-header justify-content-between ">
+
+      <h4 class=" text-center" *ngIf="action == 'update'">Mis à jour compte </h4>
+      <h4 class=" text-center" *ngIf="action == 'add'">Ajouter des documents </h4><br>
+
+      <button class="btn  bg-light">
+        <i class="fa fa-window-close"  (click)="activeModal.dismiss('Cross click')"></i>
+      </button>
+    </div>
+
+    <div class="card-body" *ngIf="action == 'update'">
+
+      <form class="spacer"  (ngSubmit)="onSubmit()">
+
+        <div class="row form">
+          <div class="col-sm-12">
+
+            <div class="col-md-12">
+              <div class="form-group row">
+                <div class="col-sm-5">
+                  <p class="">Numéro de compte: </p>
+                </div>
+                <div class="col-sm-5">
+                  <p class="text float-left">{{account.account_id_type_label}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row">
+                <div class="col-sm-5">
+                  <p class="">Libellé de compte:</p>
+                </div>
+                <div class="col-sm-5">
+                  <p class="text float-left">{{account.account_id_type_label}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group row">
+                <div class="col-sm-5">
+                  <label  class="col-form-label">Statut de compte</label>
+                </div>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control float-left" name="status" [(ngModel)]="account.status">
+                </div>
+              </div>
+            </div>
+            <input type="hidden" class="form-control" name="account_id" [(ngModel)]="account.account_id">
+
+
+            <div class="row">
+              <div class="col-md-6 text-center">
+                <button type="submit" class="btn btn-l" style="background: #dee6f9;"> Enoyer</button>
+              </div>
+              <div class="col-md-6 text-center">
+                <button type="button" class="btn btn-l btn-outline-danger" style="" (click)="activeModal.dismiss('Close clicked')"> annuler</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div class="card-body" *ngIf="action == 'add'">
+  <h4>Nom de cient: {{account.client.client_name +' '+ account.client.client_first_name}}</h4>
+  <h4>Libellé compte: {{account.account_id_type_code}}</h4>
+  <h4>Numéro compte: {{account.account_number}}</h4>
+  <div class="container-fluid" >
+    <form>
+    <div class="col-md-12">
+      <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+        <input hidden name="files" type="file" #fileInput (change)="uploadFile($event.target.files)" ngModel>
+      </div>
+      <div  class="files-list" *ngFor="let file of files;let i=index">
+        <p>{{ file.name }}</p>
+        <button class="delete-file" (click)="deleteAttachment(i)">
+          <img src="../../../assets/Recycle_Bin_Full.png">
+        </button>
+      </div>
+    </div>
+
+    <div class="col-md-12 text-center">
+      <button type="submit" class="btn btn-l col-md-6" style="background: #dee6f9;" [disabled]="files.length == 0" (click)="addDocs()"> Enoyer</button>
+    </div>
+    </form>
+  </div>
+</div>
+

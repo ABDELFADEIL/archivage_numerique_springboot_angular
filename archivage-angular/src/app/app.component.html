@@ -1,0 +1,39 @@
+<div class="page" id="page">
+<app-header *ngIf="authService.jwtToken"></app-header>
+
+<div class="row" >
+
+  <div class="col-lg-2 spacer bg-light " *ngIf="authService.jwtToken">
+
+    <!-- Sidebar -->
+    <app-sidebar></app-sidebar>
+  </div>
+
+  <div class="aut spacer" [ngClass]="[ !authService.jwtToken ? 'col-12': 'col-lg-10' ]">
+
+    <nav aria-label="breadcrumb" class="bg-light" *ngIf="authService.jwtToken">
+      <ol class="breadcrumb">
+        <li *ngIf="title=='Accueil';" class="breadcrumb-item"><a routerLink="home">Accueil</a></li>
+        <li *ngIf="title!='Accueil';" class="breadcrumb-item"><a routerLink="home">Accueil</a></li>
+        <li *ngIf="title!='Accueil';" class="breadcrumb-item active" aria-current="page" >{{title | titlecase}}</li>
+      </ol>
+    </nav>
+
+    <div class="panel col-12 bg-light">
+      <router-outlet *ngIf="!authService.jwtToken"></router-outlet>
+
+
+      <div *ngIf="authService.jwtToken" class="card"  style=" min-height: 74.8vh">
+        <div  class="card-header color1">
+          <h4>{{ title }}</h4>
+        </div>
+      <router-outlet *ngIf="authService.jwtToken"></router-outlet>
+
+    </div>
+    </div>
+  </div>
+
+
+</div>
+  <app-footer *ngIf="authService.jwtToken"></app-footer>
+</div>

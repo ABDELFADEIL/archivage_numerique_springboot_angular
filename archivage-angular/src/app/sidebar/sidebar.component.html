@@ -1,0 +1,67 @@
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <h3  [routerLink]="'home'" style="font-family: 'Bungee Inline', cursive; font-size: 1.3rem; margin-top: 6px" class="text-center text-primary">DigiArchive</h3>
+  </div>
+
+  <div class="dropdown">
+    <button [routerLink]="'home'" [routerLinkActive]="'active'"  class="btn btn-side btn-light color1"  type="button">
+      <a >Accueil</a>
+    </button>
+  </div>
+
+  <!-- <div class="dropdown">
+    <button (click)="toggleNavbarClients()" id="tog" [routerLink]="'clients'" [routerLinkActive]="'active'" class="dropdown-toggle btn btn-light color1 btn-side" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a >Clients</a>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink"  [ngClass]="{ 'show': sidbarOpenClients }">
+      <button class="dropdown-item btn btn  btn-light color1" type="button"><a [routerLink]="'new-client'">Nouveau client</a></button>
+      <button class="dropdown-item btn btn  btn-light color1" type="button"><a [routerLink]="'clients'">Gérer client</a></button>
+    </div>
+  </div> -->
+
+  <div class="" ngbDropdown>
+    <button ngbDropdownToggle  class="btn btn-light  btn-side color1" type="button">
+      <a >Contrats</a>
+    </button>
+    <div ngbDropdownMenu  >
+      <button class="btn btn  btn-light " ngbDropdownItem type="button"><a [routerLink]="'contracts'">Gérer contrat</a></button>
+      <button class="btn btn  btn-light " ngbDropdownItem type="button"><a [routerLink]="'new-contract'" >Nouveau contrat</a></button>
+    </div>
+  </div>
+
+  <div ngbDropdown>
+    <button  ngbDropdownToggle class="btn-side btn btn-light color1" type="button">
+      <a >Comptes</a>
+    </button>
+    <div ngbDropdownMenu>
+      <button class="btn btn  btn-light " ngbDropdownItem type="button"><a  [routerLink]="'accounts'">Gérer compte</a></button>
+      <button class="btn btn  btn-light " ngbDropdownItem type="button"><a [routerLink]="'new-account'">Nouveau compte</a></button>
+    </div>
+  </div>
+
+
+  <div ngbDropdown>
+    <button ngbDropdownToggle class="btn-side btn btn-light color1" type="button">
+      <a>N Classement</a>
+    </button>
+    <div ngbDropdownMenu>
+      <button class="btn btn  btn-light " ngbDropdownItem type="button"><a [routerLink]="'classifcation-nature'">Gestion de NC</a></button>
+      <button class="btn btn  btn-light" ngbDropdownItem type="button"><a [routerLink]="'new-classifcation-nature'">Ajouter NC</a></button>
+    </div>
+  </div>
+
+  <div ngbDropdown>
+    <button ngbDropdownToggle class="btn-side btn btn-light color1" type="button">
+      <a>Documents</a>
+    </button>
+    <div ngbDropdownMenu>
+      <button class="btn btn  btn-light" ngbDropdownItem type="button"><a [routerLink]="'documents'">Gestion docs </a></button>
+      <button class="btn btn  btn-light" ngbDropdownItem type="button"><a [routerLink]="'documents-to-validated'">Documents à valider</a></button>
+      <button class="btn btn  btn-light" ngbDropdownItem type="button"><a [routerLink]="'documents-to-destroyed'">Documents à détruire</a></button>
+      <button class="btn btn  btn-light" ngbDropdownItem type="button"><a [routerLink]="'documents-destroyed'">Documents détruits</a></button>
+    </div>
+  </div>
+
+
+</nav>
+

@@ -1,0 +1,177 @@
+<div class="container" style="padding: 10px;">
+
+  <div *ngIf="!client && !created" class="container-fluid" style="padding: 10px; margin-left: 30px">
+
+    <div class="row form justify-content-between">
+      <div class="col-md-8">
+
+        <form class="form-inline my-2 my-lg-0"  (ngSubmit)="onChercher(client_name, client_number)">
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label  class="col-form-label">Nom client</label>
+              <input type="text" class="form-control" name="client_name" [(ngModel)]="client_name">
+            </div>
+
+            <div class="col-md-1 d-flex align-self-center">
+              <P class="">OU/ET</P>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label  class="col-form-label">Numéro client</label>
+              <input type="text" class="form-control" name="client_number" [(ngModel)]="client_number">
+            </div>
+            <div class="form-group col-md-1 d-flex align-self-end">
+              <button class="btn btn-light my-2 my-sm-0" style="background: #dee6f9" type="submit">Search</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <div class="row spacer" style="margin-top: 70px">
+
+
+      <div class=" col-md-9">
+
+
+        <!-- table 2 -->
+
+        <table class="table table-hover" *ngIf="chercher && !client && !created">
+          <thead *ngIf="clients.length > 0 || clients">
+          <tr>
+            <th class="table-th" scope="col"></th>
+            <th class="table-th"  scope="col">Nom</th>
+            <th class="table-th" scope="col">Prénom</th>
+            <th class="table-th" scope="col">Date naissance</th>
+            <th class="table-th" scope="col">Numéro</th>
+            <th class="table-th" scope="col"></th>
+          </tr>
+          </thead>
+          <tbody *ngIf="clients">
+          <tr *ngFor="let c of clients | slice: (page-1) * size : (page-1) * size + size;" id="to-hover">
+            <td ></td>
+            <td >{{c.client_name}}</td>
+            <td >{{c.client_first_name}}</td>
+            <td >{{c.birth_date | date : 'dd/MM/yyyy'  : 'locale' }}</td>
+            <td >{{c.client_number}}</td>
+            <td scope="col"  (click)="onAddAccount(c)">
+              <p id="to-show" class="toshow" style="font-size: small" class="text-primary"><i class="fa fa-plus"></i> Ajouter </p>
+            </td>
+
+          </tr>
+          </tbody>
+          <tbody *ngIf="clients.length == 0 || !clients">
+          <tr> <td colspan="7" class="alert alert-danger text-center" style="border-radius: 0"><div>Il n'a aucun elements!</div></td></tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between p-2" *ngIf="clients && chercher && clients.length > 0">
+          <ngb-pagination [collectionSize]="clients.length" [(page)]="page" [maxSize]="size" [pageSize]="size" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" (pageChange)="onChercher(client_name, client_number)">
+          </ngb-pagination>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="client && !created" class="container spacer">
+    <div >
+      <div>
+        <div >
+          <p><span class="h6">Nom: </span> {{client.client_name}}</p>
+          <p><span class="h6">Prénom: </span> {{client.client_first_name}}</p>
+          <p><span class="h6">Departement naissance: </span> {{client.birth_dept}}</p>
+          <p><span class="h6">Date naissance: </span> {{client.birth_date | date : 'mediumDate'  : 'locale'  }}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div *ngIf="client && !created">
+    <form class="spacer" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row form">
+
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-4">
+              <label  class="col-form-label float-right">Libellé de type account</label>
+            </div>
+            <div class="col-sm-6">
+              <select formControlName="account_id_type_code"  class="form-control">
+                <option value="">select...</option>
+                <option value="CCP">Compte courant (CCP)</option>
+                <option value="LIVRET A">LIVRET A</option>
+                <option value="LIVRET Jeune">LIVRET Jeune</option>
+                <option value="LEP">Livret d’épargne populaire (LEP)</option>
+                <option value="PEL">Plan d’épargne logement (PEL)</option>
+                <option value="PERP">Plan d’épargne retraite (PERP)</option>
+                <option value="LDDS">Livret de développement durable et solidaire (LDDS)</option>
+              </select>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div class="col-sm-4">
+              <label  class="col-form-label float-right" for="typeahead-template">Nature de classification</label>
+            </div>
+            <div class="col-sm-6">
+              <ng-template #rt let-r="result">
+                <ngb-highlight [result]="r.classification_nature_label"></ngb-highlight>
+              </ng-template>
+              <input class="form-control" formControlName="classification_nature" [inputFormatter]="formatter" id="typeahead-template" type="text" [ngbTypeahead]="search" [resultTemplate]="rt" />
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-12">
+          <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+            <input hidden formControlName="files" type="file" #fileInput (change)="uploadFile($event.target.files)">
+          </div>
+          <div  class="files-list" *ngFor="let file of files;let i=index">
+            <p>{{ file.name }}</p>
+            <button class="delete-file" (click)="deleteAttachment(i)">
+              <img src="../../../assets/Recycle_Bin_Full.png">
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 text-center">
+          <button type="submit" class="btn btn-l col-md-6" style="background: #dee6f9;" [disabled]="form.invalid"> Enoyer</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+
+
+  <div *ngIf="created" class="container spacer">
+    <div >
+      <h2 class="text-center text-lg-center text-primary" style="font-weight: normal">Création d'un nouveau compte avec succès!</h2>
+      <div  *ngIf="client">
+        <div >
+          <p><span class="h6">Nom: </span> {{client.client_name}}</p>
+          <p><span class="h6">Prénom: </span> {{client.client_first_name}}</p>
+          <p><span class="h6">Type de compte: </span> {{account.account_id_type_label}}</p>
+          <p><span class="h6">Numéro compte: </span> {{ account.account_number }}</p>
+        </div>
+      </div>
+      <div class=" spacer">
+
+        <div class="col-md-12 text-center mr-auto">
+          <button type="submit" class="btn btn-l col-sm-5" [routerLink]="'/home'" style="background: #dee6f9;"> Allez à la page d'accuil</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

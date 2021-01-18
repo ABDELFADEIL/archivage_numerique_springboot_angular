@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-lg-4"></div>
+  <div class="col-lg-4 mr-auto" style="margin-top: 150px">
+<div class="card">
+  <div class="row justify-content-center">
+    <img src="assets/digiArchive.png">
+  </div>
+  <h4 class="text-center text-primary">Contectez-vous</h4>
+  <div class="card-body">
+    <form #f="ngForm" (ngSubmit)="onLogin(f.value)">
+      <div class="form-group">
+        <label class="">Username</label>
+        <input type="text" name="email" class="form-control" ngModel/>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" name="password" class="form-control" ngModel/>
+
+      </div>
+      <div >
+        <a style="color: blue;" [routerLink]="'/login'">Mot de passe oublié ?</a>
+      </div>
+      <div class="form-group spacer">
+        <button class="btn btn-primary btn-lg btn-block">
+          Connextion
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+  </div>
+  <div class="col-lg-4"></div>
+</div>

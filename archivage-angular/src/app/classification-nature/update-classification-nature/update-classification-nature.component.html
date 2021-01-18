@@ -1,0 +1,81 @@
+
+<div class="card">
+
+<div class="row card-header justify-content-between ">
+
+  <h4 class=" text-center">Modifier </h4>
+  <button class="btn  bg-light">
+    <i class="fa fa-window-close"  (click)="activeModal.dismiss('Cross click')"></i>
+  </button>
+  </div>
+
+  <div class="card-body">
+  <form class="spacer"  #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+
+    <div class="row form">
+      <div class="col-sm-12">
+
+        <div class="col-md-12">
+          <div class="form-group row">
+            <div class="col-sm-4">
+              <label class="col-form-label float-right">Id Nature de classification</label>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="classification_nature_id"  [(ngModel)]="classificationNature.classification_nature_id">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group row">
+            <div class="col-sm-4">
+              <label class="col-form-label float-right">Libellé Nature de classification</label>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="classification_nature_label"  [(ngModel)]="classificationNature.classification_nature_label">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group row">
+            <div class="col-sm-4">
+              <label  class="col-form-label float-right">Code Nature de classification</label>
+            </div>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" name="classification_nature_code" [(ngModel)]="classificationNature.classification_nature_code">
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <div class="col-md-12">
+          <div class="form-group row">
+            <div class="col-sm-4">
+              <label class="col-form-label float-right">Durée</label>
+            </div>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" name="duration" [(ngModel)]="classificationNature.duration">
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+        <div class="col-md-6 text-center">
+          <button type="submit" class="btn btn-l" style="background: #dee6f9;"> Enoyer</button>
+        </div>
+        <div class="col-md-6 text-center">
+          <button type="button" class="btn btn-l btn-outline-danger" style="" (click)="activeModal.dismiss('Close clicked')"> annuler</button>
+        </div>
+        </div>
+
+      </div>
+    </div>
+  </form>
+
+  </div>
+</div>
+

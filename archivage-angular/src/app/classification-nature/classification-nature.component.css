@@ -1,0 +1,7 @@
+.page-link li a{
+  color: #212b35 !important;
+}
+
+.page-item.active {
+  background: #dee6f9 !important;
+}
