@@ -4,6 +4,7 @@ package com.archive.service;
 import com.archive.dao.CustomerRepository;
 import com.archive.dto.CustomerDto;
 import com.archive.entity.CustomerEntity;
+import com.archive.entity.EventStatus;
 import com.archive.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +31,12 @@ public class CustomerServiceImpl implements ICustomerService{
     }
 
     @Override
-    public CustomerEntity add(CustomerEntity customerEntity) {
+    public CustomerEntity add(CustomerDto customerDto) {
         String client_number = createNewClientNumber();
         UserEntity user = userService.getAuthentificatedUser();
 
-        CustomerEntity customer = new CustomerEntity(client_number, customerEntity.getClient_nature_id(), customerEntity.getClient_name(), customerEntity.getClient_first_name(),
-                customerEntity.getCivility_id(), customerEntity.getBirth_date(), customerEntity.getBirth_dept(), customerEntity.getSiren_number(), customerEntity.getSiret_number(), user.getId(), customerEntity.getStatus());
+        CustomerEntity customer = new CustomerEntity(client_number, customerDto.getClient_nature_id(), customerDto.getClient_name(), customerDto.getClient_first_name(),
+                customerDto.getCivility_id(), customerDto.getBirth_date(), customerDto.getBirth_dept(), customerDto.getSiren_number(), customerDto.getSiret_number(), user.getId(), EventStatus.START_CUSTOMER_RELATIONSHIP);
 
         return customerRepository.save(customer);
     }
@@ -106,7 +107,7 @@ public class CustomerServiceImpl implements ICustomerService{
     }
 
     @Override
-    public Set<CustomerEntity> findByCustomerNameOrCustomerNumberContains(String customer_name, String customer_number) {
-        return customerRepository.findByClientNameOrClientNumberContains(customer_name, customer_number);
+    public Set<CustomerEntity> findByCustomerNameOrCustomerNumberContains(String client_name, String client_number) {
+        return customerRepository.findByClientNameOrClientNumberContains(client_name, client_number);
     }
 }

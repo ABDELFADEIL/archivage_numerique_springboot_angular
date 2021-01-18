@@ -63,9 +63,15 @@ public class DocumentServiceImpl implements IDocumentService{
     public DigitalDocumentEntity add(DocumentDto documentDto)
     {
         final CustomerEntity customerEntity = customerService.findById(documentDto.getContextDtoIn().getCustomerId());
-        final AccountEntity accountEntity = accountService.findById(documentDto.getContextDtoIn().getAccountId());
-        final ContractEntity contractEntity = contractService.findById(documentDto.getContextDtoIn().getContractId());
-        final ClassificationNatureEntity classificationNatureEntity = classificationNatureService.findById(documentDto.getContextDtoIn().getContractId());
+         AccountEntity accountEntity = null;
+        if(documentDto.getContextDtoIn().getAccountId() != null){
+             accountEntity = accountService.findById(documentDto.getContextDtoIn().getAccountId());
+        }
+        ContractEntity contractEntity = null;
+        if(documentDto.getContextDtoIn().getContractId() != null){
+              contractEntity = contractService.findById(documentDto.getContextDtoIn().getContractId());
+        }
+        final ClassificationNatureEntity classificationNatureEntity = classificationNatureService.findById(documentDto.getContextDtoIn().getClassification_natureId());
         final EventEntity eventEntity = eventService.add(documentDto.getContextDtoIn().getEventType());
         Set<EventEntity> eventEntitySet = new HashSet<>();
         eventEntitySet.add(eventEntity);
@@ -77,7 +83,7 @@ public class DocumentServiceImpl implements IDocumentService{
             final_stage_date = documentDto.getContextDtoIn().getFinal_business_processing_date().plusYears(classificationNatureEntity.getDuration());
         }
 
-        ContextEntity contextEntity = new ContextEntity(null, documentDto.getContextDtoIn().getMine_type(), final_stage_date,
+        ContextEntity contextEntity = new ContextEntity(documentDto.getContextDtoIn().getConserv_unit_id(), documentDto.getContextDtoIn().getMine_type(), final_stage_date,
                 LocalDateTime.now(),  documentDto.getContextDtoIn().getFinal_business_processing_date(),
                 null, false, false, null, null, eventEntitySet,userId, customerEntity,
                 contractEntity, accountEntity, classificationNatureEntity);

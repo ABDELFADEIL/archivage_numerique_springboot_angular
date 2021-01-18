@@ -20,7 +20,7 @@ import java.util.Set;
 @Getter @Setter @ToString
 public class ContextEntity extends AbstractEntity{
 
-    private String conserv_unit_id;
+    private Integer conserv_unit_id;
     private String mine_type;
     private LocalDateTime final_stage_date;
     private LocalDateTime archiving_reference_date;
@@ -44,13 +44,13 @@ public class ContextEntity extends AbstractEntity{
     private Set<EventEntity> events;
     @Column(name = "user_id", nullable = false)
     private Integer user_id;
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private CustomerEntity customer;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id", nullable = true)
     private ContractEntity contract;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = true)
     private AccountEntity account;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

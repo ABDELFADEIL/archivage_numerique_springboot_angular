@@ -8,7 +8,7 @@ import java.util.Set;
 public interface ICustomerService {
 
     CustomerEntity findById(Integer customerId);
-    CustomerEntity add(CustomerEntity customerEntity);
+    CustomerEntity add(CustomerDto customerDto);
     CustomerEntity update(CustomerDto customerDto);
     void delete(Integer customerId);
     CustomerEntity findOnByClientNumber(String clientNumber);
@@ -16,4 +16,5 @@ public interface ICustomerService {
      Set<CustomerEntity> getClientByClientNumberContains(String clientNumber);
      String createNewClientNumber();
      Set<CustomerEntity> findByCustomerNameOrCustomerNumberContains(String customer_name, String customer_number);
+
 }

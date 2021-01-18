@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AccountServiceImpl implements IAccountService{
@@ -70,6 +71,31 @@ public class AccountServiceImpl implements IAccountService{
 
         }
         return false;
+    }
+
+    @Override
+    public AccountEntity getAccountByNumber(String account_number) {
+        return accountRepository.findByAccount_number(account_number);
+    }
+
+    @Override
+    public Set<AccountEntity> getAccountsByAccountNumberContains(String account_number) {
+        return accountRepository.findByAccount_numberContains(account_number);
+    }
+
+    @Override
+    public Set<AccountEntity> getAccountsByClientNameContains(String customer_name) {
+        return accountRepository.getAccountsByClientNameContains(customer_name);
+    }
+
+    @Override
+    public Set<AccountEntity> getAccountstsByClientNameAndAccountNumberContains(String customer_name, String account_number) {
+        return accountRepository.getAccountstsByClientNameAndAccountNumberContains(customer_name, account_number);
+    }
+
+    @Override
+    public Set<AccountEntity> getAccountByEventTypeAndDateBetween(int eventType, LocalDate dateAfter, LocalDate dateBefor) {
+        return accountRepository.getAccountByEventTypeAndDateBetween(eventType, dateAfter, dateBefor);
     }
 
 

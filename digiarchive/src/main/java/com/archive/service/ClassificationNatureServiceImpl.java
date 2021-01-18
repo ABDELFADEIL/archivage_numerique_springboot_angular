@@ -37,7 +37,7 @@ public class ClassificationNatureServiceImpl implements IClassificationNatureSer
 
     @Override
     public ClassificationNatureEntity findById(Integer id) {
-        return classificationNatureRepository.findByClassificationId(id);
+        return classificationNatureRepository.findById(id).get();
     }
 
     @Override

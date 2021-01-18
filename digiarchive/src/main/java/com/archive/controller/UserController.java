@@ -6,7 +6,7 @@ import com.archive.service.IUserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 @CrossOrigin("**")
 public class UserController {
 

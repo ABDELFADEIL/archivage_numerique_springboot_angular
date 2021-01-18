@@ -37,16 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    public void configure(HttpSecurity http) throws Exception {
        http.csrf().disable();
        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-       http.authorizeRequests().antMatchers( "/api/users/create-user", "/login**", "/actuator/**", "/api/documents/get-all-docs",
-               "/api/documents/all-docs-list",
-               "/api/documents/get-all-docs",                                                                                                                                                       
-                "/v2/api-docs",
-               "/swagger-resources/**",
-               "/swagger-ui.html",
-               "/webjars/**" ,
-              "/**/**",
-              "/swagger.json").permitAll();
-       http.authorizeRequests().antMatchers("/contract", "/contract/**").hasAuthority("USER");
+       http.authorizeRequests().antMatchers( "/user/create-user", "/login**", "/actuator/**", "/documents/get-all-docs",
+              "/**/**").permitAll();
+       http.authorizeRequests().antMatchers().hasAuthority("USER");
+       http.authorizeRequests().antMatchers("/account/**", "/contract/**", "/customer/**", "/document/add", "/document/update").hasAuthority("EMPLOYEE");
+       http.authorizeRequests().antMatchers("/classificationNature/**", "/contract/**", "/customer/**", "/document/**", "/document/**").hasAuthority("ARCHIVISTE");
        http.authorizeRequests().antMatchers("/account", "/contract/**", "/client/**").hasAnyAuthority("USER", "ADMIN");
        http.authorizeRequests().anyRequest().authenticated();
        http.addFilter(new JWTAuthenticationFilter(authenticationManager()));

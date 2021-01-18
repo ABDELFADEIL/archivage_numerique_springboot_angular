@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 public class ContextDtoIn extends AbstractEntity {
 
-    private String conserv_unit_id;
+    private Integer conserv_unit_id;
     private String mine_type;
     private LocalDateTime archiving_reference_date;
     private LocalDateTime final_business_processing_date;
@@ -24,14 +24,10 @@ public class ContextDtoIn extends AbstractEntity {
     private LocalDateTime deletion_date;
     private Integer classification_natureId;
     private int eventType;
-
-
-
+    private Integer contractId;
+    private Integer accountId;
     private Integer customerId;
 
-    private Integer contractId;
-
-    private Integer accountId;
 
 
 }

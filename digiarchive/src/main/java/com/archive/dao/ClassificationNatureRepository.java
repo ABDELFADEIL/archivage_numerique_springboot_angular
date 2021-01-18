@@ -15,9 +15,9 @@ public interface ClassificationNatureRepository extends JpaRepository<Classifica
 
     @Query("select cn from ClassificationNatureEntity cn where cn.classification_nature_code=:classificationNatureCode")
     public ClassificationNatureEntity findByClassification_nature_code(@Param("classificationNatureCode") int classificationNatureCode);
-    @Query("select c from ClassificationNatureEntity c where c.classification_nature_label like %:keyword% or c.classification_nature_code like %:keyword%")
+    @Query("select c from ClassificationNatureEntity c where c.classification_nature_label like %:keyword% or c.classification_nature_label like %:keyword%")
     public List<ClassificationNatureEntity> getAllClassificationNatureByKeyWord(@Param("keyword") String keyword);
-    @Query(value="SELECT * FROM classification_nature WHERE classification_nature.classification_nature_id= :classification_nature_id", nativeQuery=true)
-    public ClassificationNatureEntity findByClassificationId(@Param("classification_nature_id") Integer classification_nature_id);
+   // @Query(value="SELECT c from ClassificationNatureEntity c where ClassificationNatureEntity.id= :id")
+   // public ClassificationNatureEntity findByClassificationId(@Param("id") Integer id);
 
 }
