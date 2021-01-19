@@ -96,4 +96,10 @@ public class AccountController {
             @RequestParam(value = "client_name") String client_name) {
         return accountService.getAccountstsByClientNameAndAccountNumberContains(client_name, account_number);
     }
+
+    @GetMapping("/get--accounts-name")
+    public Set<AccountEntity> getAllAccounts(
+            @RequestParam(value = "client_name") String client_name) {
+        return accountService.getAccountsByClientNameContains(client_name);
+    }
 }

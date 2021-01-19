@@ -10,6 +10,7 @@ import com.archive.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.Set;
 
 @Service
@@ -103,15 +104,8 @@ public class ContractServiceImpl implements IContractService{
 
     @Override
     public String createNewContractNumber() {
-        System.out.println("contract_number_pre//");
-        String contract_number_pre = getMaxContractNumber();
-        System.out.println(contract_number_pre);
-        long contract_number =  Long.parseLong(contract_number_pre);
-        System.out.println(contract_number);
-        long new_contract_number = contract_number + 1;
-        System.out.println(new_contract_number);
-        String contract_number_nex = "00000000000".substring(String.valueOf(new_contract_number).length()+1)+new_contract_number;
-        System.out.println(contract_number_nex);
+        Random random = new Random();
+        String contract_number_nex = random.nextLong()+"";
         return contract_number_nex;
     }
 

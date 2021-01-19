@@ -15,11 +15,8 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "context")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter @Setter @ToString
+@AllArgsConstructor @NoArgsConstructor @Getter @Setter @ToString
 public class ContextEntity extends AbstractEntity{
-
     private Integer conserv_unit_id;
     private String mine_type;
     private LocalDateTime final_stage_date;
@@ -38,7 +35,7 @@ public class ContextEntity extends AbstractEntity{
     private LocalDateTime deletion_date;
     @LazyCollection(LazyCollectionOption.TRUE)
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "context_has_event", joinColumns = {
+    @JoinTable(name = "event_context", joinColumns = {
     @JoinColumn(name = "context_id", nullable = false, referencedColumnName = "id") }, inverseJoinColumns = {
     @JoinColumn(name = "event_id", nullable = false, referencedColumnName = "id") })
     private Set<EventEntity> events;

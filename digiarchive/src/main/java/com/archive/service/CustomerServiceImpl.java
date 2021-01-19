@@ -8,6 +8,7 @@ import com.archive.entity.EventStatus;
 import com.archive.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
 import java.util.Set;
 
 @Service
@@ -34,10 +35,9 @@ public class CustomerServiceImpl implements ICustomerService{
     public CustomerEntity add(CustomerDto customerDto) {
         String client_number = createNewClientNumber();
         UserEntity user = userService.getAuthentificatedUser();
-
         CustomerEntity customer = new CustomerEntity(client_number, customerDto.getClient_nature_id(), customerDto.getClient_name(), customerDto.getClient_first_name(),
                 customerDto.getCivility_id(), customerDto.getBirth_date(), customerDto.getBirth_dept(), customerDto.getSiren_number(), customerDto.getSiret_number(), user.getId(), EventStatus.START_CUSTOMER_RELATIONSHIP);
-
+        System.out.println(customer);
         return customerRepository.save(customer);
     }
 
@@ -96,13 +96,8 @@ public class CustomerServiceImpl implements ICustomerService{
 
     @Override
     public String createNewClientNumber() {
-        String client_number_pre = customerRepository.getMaxClientNumber();
-        if (client_number_pre==null){
-            return "000000000001";
-        }
-        long number_account =  Long.parseLong(client_number_pre);
-        long new_number_account = number_account + 1;
-        String client_number_nex = "00000000000".substring(String.valueOf(new_number_account).length()+1)+new_number_account;
+        Random random = new Random();
+        String client_number_nex = random.nextInt( Integer.MAX_VALUE)+100000+"";
         return client_number_nex;
     }
 

@@ -18,8 +18,8 @@ public class ClassificationNatureController {
         this.classificationNatureService = classificationNatureService;
     }
 
-    @PostMapping("/create-classificationNature")
-    public ClassificationNatureEntity addClassificationNature(@RequestBody(required = true) ClassificationNatureEntity classificationNature) {
+    @PostMapping("/add")
+    public ClassificationNatureEntity add(@RequestBody(required = true) ClassificationNatureEntity classificationNature) {
         return classificationNatureService.addClassificationNature(classificationNature);
     }
 
@@ -44,12 +44,12 @@ public class ClassificationNatureController {
         return classificationNatureService.findByClassificationNatureId(classificationNatureId);
     }
 
-    @PutMapping("/update-one")
+    @PutMapping("/update")
     public ClassificationNatureEntity updateClassificationNature(@RequestBody ClassificationNatureEntity classificationNature) {
         return classificationNatureService.updateClassificationNature(classificationNature);
     }
 
-    @DeleteMapping("/delete-one")
+    @DeleteMapping("/delete")
     public void removeClassificationNature(@RequestParam(value = "classificationNatureId") Integer classificationNatureId) {
         classificationNatureService.removeClassificationNature(classificationNatureId);
     }

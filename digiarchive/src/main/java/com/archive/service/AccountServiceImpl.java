@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @Service
@@ -105,13 +106,8 @@ public class AccountServiceImpl implements IAccountService{
 
     public String createNewAccountNumber() {
 
-        String account_number_pre = getMaxAccountNumber();
-        if (account_number_pre == null){
-            account_number_pre = "00000000000";
-        }
-        long account_number =  Long.parseLong(account_number_pre);
-        long new_account_number = account_number + 1;
-        String account_number_nex = "00000000000".substring(String.valueOf(new_account_number).length()+1)+new_account_number;
+        Random random = new Random();
+        String account_number_nex = random.nextLong()+"";
         return account_number_nex;
     }
 }

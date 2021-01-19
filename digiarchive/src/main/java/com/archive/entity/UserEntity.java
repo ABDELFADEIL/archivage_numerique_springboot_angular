@@ -32,7 +32,7 @@ public class UserEntity extends AbstractEntity{
     @Column(name = "email", length = 55, nullable = false, unique = true)
     private String email;
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_has_role", joinColumns = {
+    @JoinTable(name = "user_role", joinColumns = {
             @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id") }, inverseJoinColumns = {
             @JoinColumn(name = "role_id", nullable = false, referencedColumnName = "id") })
     private Set<RoleEntity> roles = new HashSet<>();

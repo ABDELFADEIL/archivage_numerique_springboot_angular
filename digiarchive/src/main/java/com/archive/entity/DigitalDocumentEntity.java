@@ -21,7 +21,7 @@ public class DigitalDocumentEntity extends AbstractEntity{
     private String file_name;
     @Column(name= "archive_format", nullable = false)
     private String archive_format;
-    @Column(name = "encoded_doc", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "encoded_doc", nullable = false, columnDefinition = "MEDIUMTEXT")
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String encodedDoc;
