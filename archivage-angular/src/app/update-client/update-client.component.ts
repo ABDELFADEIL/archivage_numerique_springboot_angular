@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {ClientService} from '../service/client.service';
-import {Contract} from '../models/contract';
+import {ContractDto} from '../models/contractDto';
 import {Client} from '../models/client';
 import {Router} from '@angular/router';
 

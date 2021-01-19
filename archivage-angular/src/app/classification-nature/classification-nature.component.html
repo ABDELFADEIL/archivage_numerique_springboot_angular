@@ -21,11 +21,11 @@
   </thead>
   <tbody *ngIf="classements">
   <tr *ngFor="let c of classements | slice: (page-1) * size : (page-1) * size + size;">
-    <td scope="row">{{c.classification_nature_id}}</td>
+    <td scope="row">{{c.id}}</td>
     <td>{{c.classification_nature_label}}</td>
     <td>{{c.classification_nature_code}}</td>
     <td>{{c.duration}}</td>
-    <td style="cursor: pointer" (click)="onDelete(c.classification_nature_id)"><i class="text-danger fa fa-trash"></i></td>
+    <td style="cursor: pointer" (click)="onDelete(c.id)"><i class="text-danger fa fa-trash"></i></td>
     <td style="cursor: pointer" (click)="openFormModal(c)"><i class="text-primary fa fa-edit"></i></td>
   </tr>
   </tbody>

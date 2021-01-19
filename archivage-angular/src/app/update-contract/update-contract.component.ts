@@ -3,7 +3,7 @@ import {Account} from '../models/account';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {AccountService} from '../service/account.service';
 import {Router} from '@angular/router';
-import {Contract} from '../models/contract';
+import {ContractDto} from '../models/contractDto';
 import {ContractService} from '../service/contract.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
@@ -17,7 +17,7 @@ export class UpdateContractComponent implements OnInit {
   public status;
 
 
-  @Input()  contract: Contract;
+  @Input()  contract: any;
   @Input()  action: string;
   private contract_id: string;
   constructor(public activeModal: NgbActiveModal, private contractService: ContractService, private router : Router) { }
@@ -27,7 +27,7 @@ export class UpdateContractComponent implements OnInit {
 
   onSubmit() {
     console.log(this.contract);
-    const contract: Contract = this.contract;
+    const contract: ContractDto = this.contract;
     this.contractService.update(contract).subscribe(data => {
       this.closeModal();
       this.router.navigateByUrl('contracts')
@@ -55,7 +55,7 @@ export class UpdateContractComponent implements OnInit {
   addDocs() {
     console.log("addDocs() method ****");
     const formdata = new FormData();
-    formdata.append("contract_id", this.contract.contract_id);
+    formdata.append("id", this.contract['id']);
     for (let file of this.files) {
       formdata.append("files", file);
     }

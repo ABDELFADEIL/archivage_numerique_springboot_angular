@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Contract} from '../models/contract';
+import {ContractDto} from '../models/contractDto';
 import {ContractService} from '../service/contract.service';
 import {Router} from '@angular/router';
 import {ClientService} from '../service/client.service';
@@ -18,7 +18,7 @@ export class ContractsComponent implements OnInit {
   public title = "Contrats"
   public contract_number: string;
   public chercher: boolean = false;
-  public contracts: Contract [] =  [];
+  public contracts: ContractDto [] =  [];
   public page : number = 1;
   public size : number= 12;
   public currentSize : number;
@@ -29,7 +29,7 @@ export class ContractsComponent implements OnInit {
   public client : Client;
   public client_name;
   public client_number;
-  private contract: Contract;
+  private contract: ContractDto;
 
   constructor(private contractService: ContractService, private router: Router, private clientService: ClientService, private modalService: NgbModal) { }
 
@@ -63,16 +63,16 @@ export class ContractsComponent implements OnInit {
 
   }
 
-  onAddDocsContract(c: Contract) {
+  onAddDocsContract(c: ContractDto) {
 
   }
 
-  onUpdateContract(c: Contract) {
+  onUpdateContract(c: ContractDto) {
 
   }
 
 
-  openFormModal(contract:Contract, action) {
+  openFormModal(contract:ContractDto, action) {
     console.log(contract);
     this.contract = contract;
     const modalRef = this.modalService.open(UpdateContractComponent);

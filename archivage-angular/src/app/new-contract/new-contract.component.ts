@@ -10,9 +10,11 @@ import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {departs} from '../../environments/departs';
 import {ContractService} from '../service/contract.service';
-import {Contract} from '../models/contract';
+import {ContractDto} from '../models/contractDto';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {Account} from '../models/account';
+import {DocumentService} from '../service/document.service';
+import {DocumentDto} from '../models/documentDto';
 
 @Component({
   selector: 'app-new-contract',
@@ -20,7 +22,7 @@ import {Account} from '../models/account';
   styleUrls: ['./new-contract.component.css']
 })
 export class NewContractComponent implements OnInit {
-  public files: File [] = [];
+ // public files: File [] = [];
   public document: Document;
   public model;
   public modelDep;
@@ -29,7 +31,7 @@ export class NewContractComponent implements OnInit {
   public created: boolean;
   public clientId: number;
   final_business_processing_date: any;
-  public contract: Contract;
+  public contract: ContractDto;
   client_name: string;
   client_number: number;
   clients: Client [] = [];
@@ -42,8 +44,9 @@ export class NewContractComponent implements OnInit {
   public keyword;
   chercher: boolean =false;
   create: boolean= false;
-
-  constructor(private contractService: ContractService, private clientService: ClientService, private router: Router, private  classificationNatureService: ClassificationNatureService) { }
+  contractDto: ContractDto;
+  constructor(private contractService: ContractService, private clientService: ClientService,
+              private router: Router, private classificationNatureService: ClassificationNatureService, public documentService: DocumentService) { }
 
   ngOnInit(): void {
       this.client = this.clientService.client;
@@ -51,70 +54,40 @@ export class NewContractComponent implements OnInit {
       this.getClassificationNature();
   }
 
-  onSubmit() {
+ async addContract(){
     const form = this.form.value;
-    console.log(form)
-    const formdata = new FormData();
-    const cn: ClassificationNature = form.classification_nature;
-    console.log(cn);
-    let contract: Contract = new Contract();
-   // contract.contract_id_type_label = form.contract_id_type_label;
-    contract.contract_id_type_code = form.contract_id_type_code;
-    console.log(contract.contract_id_type_code);
-
-    if(contract.contract_id_type_code == 'CAH'){
-      contract.contract_id_type_label = 'Contrats d\'assurance habitation';
-    }else if(contract.contract_id_type_code == 'CAV'){
-      contract.contract_id_type_label = 'Assurance vie';
-    } else if(contract.contract_id_type_code == 'CAHP'){
-      contract.contract_id_type_label = 'Contrats d\'assurance habitation professionnelle';
-    }else if(contract.contract_id_type_code == 'ADI'){
-      contract.contract_id_type_label = 'Assurance décès invalidité ';
-    }else if(contract.contract_id_type_code == 'PERP'){
-      contract.contract_id_type_label = 'Assurance automobile';
-    }else if(contract.contract_id_type_code == 'APJ'){
-      contract.contract_id_type_label = 'Assurance protection juridique';
-    }
-    else if(contract.contract_id_type_code == 'AMP'){
-      contract.contract_id_type_label = 'Assurance moyens de paiements ';
-    }
-    else if(contract.contract_id_type_code == 'AAP'){
-      contract.contract_id_type_label = 'Assurance activité professionnelle';
-    }
-    else if(contract.contract_id_type_code == 'ACS'){
-      contract.contract_id_type_label = 'Assurance complémentaire santé';
-    }
-
-    // contract.client = this.clientService.client;
-    const final_business_processing_date = form.final_business_processing_date;
-    console.log(contract);
-    for (let file of this.files) {
-      formdata.append("files", file);
-    }
-    formdata.append('classificationNature', JSON.stringify(cn));
-    formdata.append('final_business_processing_date', JSON.stringify(final_business_processing_date));
-    formdata.append('contract', JSON.stringify(contract));
-    formdata.append('client', JSON.stringify(this.client));
     console.log(form);
-    console.log(this.client);
-    console.log(contract);
+    this.contractDto = new ContractDto();
+    this.contractDto.customerId = this.client.id;
+    this.contractDto.contract_id_type_label = this.getContractIdTypeLabel(form.contract_id_type_code);
+    this.contractDto.contract_id_type_code = form.contract_id_type_code;
+    console.log(this.contractDto.contract_id_type_code);
+    console.log(this.contractDto);
+    const contract = await this.contractService.createContract(this.contractDto);
+    console.log(contract)
+    return contract;
+  }
 
-    this.contractService.createContract(formdata).subscribe(data => {
-      console.log("onSubmit méthode réussie");
-      this.created = true
-      console.log(data);
-      this.created = true;
-      this.client = data[0].context.client;
-      this.contract = data[0].context.contract;
-      this.final_business_processing_date =  data[0].context.final_business_processing_date;
-     // console.log(this.contract)
-
-    }, error => {
-      console.log(error);
-
+  async addCocuments(contract){
+    const documentsDto: DocumentDto[] = await this.documentService.getListDocumentDto(this.documentService.files, this.client);
+    console.log(documentsDto)
+    documentsDto.forEach(document => {
+      document.contextDtoIn.contractId = contract.id;
     })
-
-
+    console.log(documentsDto);
+    let documents:any = null;
+    setTimeout(async () =>  {
+      documents = await this.documentService.addDocuments(documentsDto);
+      console.log(documents)
+    }, 1000);
+    this.documentService.files = []
+    return documents;
+  }
+  async onSubmit() {
+    const contract:any = await this.addContract();
+    console.log(contract)
+    const documents = await this.addCocuments(contract);
+   return documents;
   }
 
   getClassificationNature() {
@@ -152,14 +125,14 @@ export class NewContractComponent implements OnInit {
   uploadFile(event) {
     for (let index = 0; index < event.length; index++) {
       const element = event[index];
-      this.files.push(element)
+      this.documentService.files.push(element)
     }
-    console.log(this.files);
+    console.log(this.documentService.files);
   }
 
   deleteAttachment(index) {
-    this.files.splice(index, 1);
-    if (this.files.length === 0){
+    this.documentService.files.splice(index, 1);
+    if (this.documentService.files.length === 0){
       this.form.removeControl('files');
       this.form.addControl('files', new FormControl('', Validators.required));
     }
@@ -212,4 +185,28 @@ export class NewContractComponent implements OnInit {
     this.client = c;
   }
 
+  private getContractIdTypeLabel(contract_id_type_code) {
+    if(contract_id_type_code == 'CAH'){
+      return  'Contrats d\'assurance habitation';
+    }else if(contract_id_type_code == 'CAV'){
+      return  'Assurance vie';
+    } else if(contract_id_type_code == 'CAHP'){
+      return 'Contrats d\'assurance habitation professionnelle';
+    }else if(contract_id_type_code == 'ADI'){
+      return 'Assurance décès invalidité ';
+    }else if(contract_id_type_code == 'PERP'){
+       return 'Assurance automobile';
+    }else if(contract_id_type_code == 'APJ'){
+       return 'Assurance protection juridique';
+    }
+    else if(contract_id_type_code == 'AMP'){
+      return 'Assurance moyens de paiements ';
+    }
+    else if(contract_id_type_code == 'AAP'){
+        return 'Assurance activité professionnelle';
+    }
+    else if(contract_id_type_code == 'ACS'){
+      return 'Assurance complémentaire santé';
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Contract} from '../models/contract';
+import {ContractDto} from '../models/contractDto';
 import {Client} from '../models/client';
 import {ContractService} from '../service/contract.service';
 import {Router} from '@angular/router';

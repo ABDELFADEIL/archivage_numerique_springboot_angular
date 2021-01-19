@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ClientService} from '../../service/client.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Document} from '../../models/document';
 import {ClassificationNatureService} from '../../service/classification-nature.service';
 import {ClassificationNature} from '../../models/classification-nature';
@@ -37,7 +37,14 @@ export class NewClientComponent implements OnInit {
   public clientId: number;
 
 
-  constructor(private clientService: ClientService, private router: Router, public documentService: DocumentService) {
+  constructor(private clientService: ClientService, private router: Router,
+              public documentService: DocumentService)
+  {
+    this.router.events.subscribe((val) => {
+      if(val instanceof NavigationEnd){
+        this.initializeFormGroup();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -75,7 +82,7 @@ export class NewClientComponent implements OnInit {
   }
 
   async addCustomerAndDocuments() {
-    const customer = await this.clientService.addCustomer(this.form.value);
+    const customer:any = await this.clientService.addCustomer(this.form.value);
     if (customer != 'undefined' || customer != null){
       this.clientService.client = customer;
       this.client = customer;
@@ -106,8 +113,9 @@ export class NewClientComponent implements OnInit {
 
   async onSubmit() {
     const response =  await this.addCustomerAndDocuments();
-    if (response == null || 'undefined'){
-      this.created = true
+    if (response != null || response != 'undefined'){
+      this.created = true;
+      this.documentService.files = [];
     }
       console.log(response)
 

@@ -17,15 +17,15 @@ export class ClassificationNatureService {
   }
 
   update(classificationNature:ClassificationNature) {
-    return this.httpClient.put(environment.apiUrl+"/classificationNature/update-one", classificationNature);
+    return this.httpClient.put(environment.apiUrl+"/classificationNature/update", classificationNature);
   }
 
   delete(classificationNatureId: number) {
-   return this.httpClient.delete(environment.apiUrl+ "/classificationNature/delete-one?classificationNatureId="+classificationNatureId);
+   return this.httpClient.delete(environment.apiUrl+ "/classificationNature/delete?classificationNatureId="+classificationNatureId);
   }
 
   create(classificationNature: ClassificationNature) {
-    return this.httpClient.post(environment.apiUrl+"/classificationNature/create-classificationNature", classificationNature);
+    return this.httpClient.post(environment.apiUrl+"/classificationNature/add", classificationNature);
   }
 
   getByKeyWord(keyWord: any) {

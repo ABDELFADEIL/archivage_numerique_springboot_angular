@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Document} from '../models/document';
 import {Client} from '../models/client';
 import {ClassificationNature} from '../models/classification-nature';
-import {Contract} from '../models/contract';
+import {ContractDto} from '../models/contractDto';
 import {ContractService} from '../service/contract.service';
 import {ClientService} from '../service/client.service';
 import {Router} from '@angular/router';

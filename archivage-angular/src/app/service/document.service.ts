@@ -14,27 +14,6 @@ export class DocumentService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllDocs() {
-    return this.httpClient.get<Document []>(environment.apiUrl+"/document/all-docs-infos");
-  }
-
-  getDocById() :Observable<Document []>{
-    return this.httpClient.get<Document []>(environment.apiUrl+"/document/get-doc-by-id?docId");
-  }
-
-  updateDocContext( docID,  context) {
-    return this.httpClient.put(environment.apiUrl+"/document/update-doc-context-by-doc-id?docID="+docID, context);
-  }
-
-  delete(id: any) {
-    return this.httpClient.delete(environment.apiUrl+ "/document/delete-one?docID="+id);
-  }
-
-  getAllDocsEventTypeBeforeDate(since: string) {
-    return this.httpClient.get<any[]>(environment.apiUrl+"/document/search-docs-fbpd-null-since?since="+since);
-
-  }
-
   updateDFBM(documents: FormData) {
     return this.httpClient.put(environment.apiUrl+"/document/update-fbpd", documents);
   }
@@ -88,5 +67,25 @@ export class DocumentService {
     });
   }
 
+  getAllDocs() {
+    return this.httpClient.get<Document []>(environment.apiUrl+"/document/all-docs-infos");
+  }
+
+  getDocById() :Observable<Document []>{
+    return this.httpClient.get<Document []>(environment.apiUrl+"/document/get-doc-by-id?docId");
+  }
+
+  updateDocContext( docID,  context) {
+    return this.httpClient.put(environment.apiUrl+"/document/update-doc-context-by-doc-id?docID="+docID, context);
+  }
+
+  delete(id: any) {
+    return this.httpClient.delete(environment.apiUrl+ "/document/delete-one?docID="+id);
+  }
+
+  getAllDocsEventTypeBeforeDate(since: string) {
+    return this.httpClient.get<any[]>(environment.apiUrl+"/document/search-docs-fbpd-null-since?since="+since);
+
+  }
 
 }

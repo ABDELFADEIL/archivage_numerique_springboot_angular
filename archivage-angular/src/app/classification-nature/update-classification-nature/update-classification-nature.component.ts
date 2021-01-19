@@ -20,8 +20,9 @@ export class UpdateClassificationNatureComponent implements OnInit {
   }
 
   onSubmit(value: any) {
+    console.log(value)
     console.log(this.classificationNature);
-    this.classificationNatureService.update(value).subscribe(data => {
+    this.classificationNatureService.update(this.classificationNature).subscribe(data => {
       this.closeModal();
       this.router.navigateByUrl('classifcation-nature')
     }, error => {
