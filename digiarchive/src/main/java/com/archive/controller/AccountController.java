@@ -34,15 +34,16 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping(value = "/add-account", consumes = {"application/json"})
+    @PostMapping(value = "/add", consumes = {"application/json"})
     public AccountEntity addAccount(
             @RequestBody AccountDto accountDto
                                    )
     {
+        System.out.println(accountDto);
         return accountService.add(accountDto);
     }
 
-    @PutMapping(value = "/update-account", consumes = {"application/json"})
+    @PutMapping(value = "/update", consumes = {"application/json"})
     public AccountEntity updateAccount(
             @RequestBody AccountDto accountDto
     )

@@ -13,6 +13,9 @@ import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {departs} from '../../environments/departs';
 import {Account} from '../models/account';
+import {AccountDto} from '../models/accountDto';
+import {DocumentDto} from '../models/documentDto';
+import {DocumentService} from '../service/document.service';
 
 @Component({
   selector: 'app-new-account',
@@ -43,8 +46,9 @@ export class NewAccountComponent implements OnInit {
   public keyword;
   chercher: boolean =false;
   create: boolean= false;
-
-  constructor(private accountService: AccountService, private clientService: ClientService, private router: Router, private  classificationNatureService: ClassificationNatureService) { }
+  constructor(private accountService: AccountService, private clientService: ClientService,
+              private router: Router, private  classificationNatureService: ClassificationNatureService,
+              public documentService: DocumentService) { }
 
   ngOnInit(): void {
     this.client = this.clientService.client;
@@ -52,62 +56,47 @@ export class NewAccountComponent implements OnInit {
     this.getClassificationNature();
   }
 
-  onSubmit(){
-    // console.log(f.value)
+
+
+  async addAccount(){
     const form = this.form.value;
     console.log(form)
-    const formdata = new FormData();
-    const cn: ClassificationNature = form.classification_nature;
-    console.log(cn);
-    let account: Account = new Account();
-    account.account_id_type_code = form.account_id_type_code;
-
-    if(account.account_id_type_code == 'CCP'){
-      account.account_id_type_label = 'Compte courant (CCP)';
-    }else if(account.account_id_type_code == 'LIVRET A'){
-      account.account_id_type_label = 'LIVRET A';
-    } else if(account.account_id_type_code == 'LIVRET Jeune'){
-      account.account_id_type_label = 'LIVRET Jeune';
-    }else if(account.account_id_type_code == 'LEP'){
-      account.account_id_type_label = 'Livret d’épargne populaire (LEP)';
-    }else if(account.account_id_type_code == 'PEL'){
-      account.account_id_type_label = 'Plan d’épargne logement (PEL)';
-    }else if(account.account_id_type_code == 'PERP'){
-      account.account_id_type_label = 'Plan d’épargne retraite (PERP)';
-    }else if(account.account_id_type_code == 'LDDS'){
-      account.account_id_type_label = 'Livret de développement durable et solidaire (LDDS)';
-    }
-
-    // contract.client = this.clientService.client;
-   // const final_business_processing_date = '';
-    console.log(account);
-    for (let file of this.files) {
-      formdata.append("files", file);
-    }
-    formdata.append('classificationNature', JSON.stringify(cn));
-    //formdata.append('final_business_processing_date', JSON.stringify(final_business_processing_date));
-    formdata.append('account', JSON.stringify(account));
-    formdata.append('client', JSON.stringify(this.client));
-    console.log(form);
-    console.log(this.client);
-    console.log(account);
-
-    this.accountService.createAccount(formdata).subscribe(data => {
-      console.log("onSubmit méthode réussie");
-      this.created = true
-      console.log(data);
+    let accountDto: AccountDto = new AccountDto();
+    accountDto.account_id_type_label = this.getAccountLabel(form.account_id_type_code);
+    accountDto.account_id_type_code = form.account_id_type_code;
+    accountDto.customerId = this.client.id;
+    accountDto.account_number = null;
+    accountDto.creating_date = new Date();
+    accountDto.status = 0;
+    const account = await this.accountService.createAccount(accountDto);
+    return account;
+  }
+ async onSubmit(){
+    const account: any = await this.addAccount();
+    this.account = account;
+    const documents = await this.addCocuments(account);
+    console.log(documents);
+    if (account){
       this.created = true;
-      this.client = data[0].context.client;
-      this.account = data[0].context.account;
-      this.final_business_processing_date =  data[0].context.final_business_processing_date;
-      // console.log(this.contract)
+    }
+  }
 
-    }, error => {
-      console.log(error);
-
+  async addCocuments(account){
+    console.log(account)
+    const documentsDto: DocumentDto[] = await this.documentService.getListDocumentDto(this.documentService.files, this.client);
+    console.log(documentsDto);
+     documentsDto.forEach(document => {
+      document.contextDtoIn.accountId = account.id;
+      document.contextDtoIn.classification_natureId = this.form.value.classification_nature.id
     })
-
-
+    console.log(documentsDto);
+    let documents:any = null;
+    setTimeout(async () =>  {
+      documents = await this.documentService.addDocuments(documentsDto);
+      console.log(documents)
+    }, 1000);
+    this.documentService.files = [];
+    return documents;
   }
 
   getClassificationNature() {
@@ -117,7 +106,7 @@ export class NewAccountComponent implements OnInit {
       console.log(error);
     })
   }
-  //   public files: File [] = [];
+
   form :FormGroup = new FormGroup({
     // client_id: new FormControl(null),
     account_id_type_code: new FormControl('', Validators.required),
@@ -145,13 +134,13 @@ export class NewAccountComponent implements OnInit {
   uploadFile(event) {
     for (let index = 0; index < event.length; index++) {
       const element = event[index];
-      this.files.push(element)
+      this.documentService.files.push(element)
     }
-    console.log(this.files);
+    console.log(this.documentService.files);
   }
 
   deleteAttachment(index) {
-    this.files.splice(index, 1);
+    this.documentService.files.splice(index, 1);
     if (this.files.length === 0){
       this.form.removeControl('files');
       this.form.addControl('files', new FormControl('', Validators.required));
@@ -204,6 +193,24 @@ export class NewAccountComponent implements OnInit {
 
   onAddAccount(c: Client) {
     this.client = c;
+  }
+
+  private getAccountLabel(account_id_type_code) {
+    if(account_id_type_code == 'CCP'){
+      return 'Compte courant (CCP)';
+    }else if(account_id_type_code == 'LIVRET A'){
+      return  'LIVRET A';
+    } else if(account_id_type_code == 'LIVRET Jeune'){
+      return 'LIVRET Jeune';
+    }else if(account_id_type_code == 'LEP'){
+      return 'Livret d’épargne populaire (LEP)';
+    }else if(account_id_type_code == 'PEL'){
+      return 'Plan d’épargne logement (PEL)';
+    }else if(account_id_type_code == 'PERP'){
+      return 'Plan d’épargne retraite (PERP)';
+    }else if(account_id_type_code == 'LDDS'){
+      return 'Livret de développement durable et solidaire (LDDS)';
+    }
   }
 }
 
