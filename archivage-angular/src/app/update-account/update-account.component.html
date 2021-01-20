@@ -13,7 +13,7 @@
 
     <div class="card-body" *ngIf="action == 'update'">
 
-      <form class="spacer"  (ngSubmit)="onSubmit()">
+      <form class="spacer"  (ngSubmit)="updateAccount()">
 
         <div class="row form">
           <div class="col-sm-12">
@@ -50,7 +50,7 @@
                 </div>
               </div>
             </div>
-            <input type="hidden" class="form-control" name="account_id" [(ngModel)]="account.account_id">
+            <input type="hidden" class="form-control" name="id" [(ngModel)]="account.id">
 
 
             <div class="row">
@@ -71,7 +71,7 @@
 </div>
 
 <div class="card-body" *ngIf="action == 'add'">
-  <h4>Nom de cient: {{account.client.client_name +' '+ account.client.client_first_name}}</h4>
+  <h4>Nom de cient: {{account.customer.client_name +' '+ account.customer.client_first_name}}</h4>
   <h4>Libellé compte: {{account.account_id_type_code}}</h4>
   <h4>Numéro compte: {{account.account_number}}</h4>
   <div class="container-fluid" >
@@ -80,7 +80,7 @@
       <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
         <input hidden name="files" type="file" #fileInput (change)="uploadFile($event.target.files)" ngModel>
       </div>
-      <div  class="files-list" *ngFor="let file of files;let i=index">
+      <div  class="files-list" *ngFor="let file of documentService.files;let i=index">
         <p>{{ file.name }}</p>
         <button class="delete-file" (click)="deleteAttachment(i)">
           <img src="../../../assets/Recycle_Bin_Full.png">
@@ -89,7 +89,7 @@
     </div>
 
     <div class="col-md-12 text-center">
-      <button type="submit" class="btn btn-l col-md-6" style="background: #dee6f9;" [disabled]="files.length == 0" (click)="addDocs()"> Enoyer</button>
+      <button type="submit" class="btn btn-l col-md-6" style="background: #dee6f9;" [disabled]="documentService.files.length == 0" (click)="addCocuments(account)"> Enoyer</button>
     </div>
     </form>
   </div>

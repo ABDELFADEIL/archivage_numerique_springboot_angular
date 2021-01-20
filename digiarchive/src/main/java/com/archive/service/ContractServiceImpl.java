@@ -10,6 +10,7 @@ import com.archive.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ public class ContractServiceImpl implements IContractService{
         CustomerEntity customer = customerService.findById(contractDto.getCustomerId());
 
         ContractEntity contractEntity = new ContractEntity(contractDto.getContract_id_type_code(), contractDto.getContract_id_type_label(),
-                customer, contract_number, LocalDate.now(), user.getId(), EventStatus.START_CUSTOMER_RELATIONSHIP);
+                customer, contract_number, LocalDateTime.now(), user.getId(), EventStatus.START_CUSTOMER_RELATIONSHIP);
 
         return contractRepository.save(contractEntity);
     }
@@ -61,7 +62,7 @@ public class ContractServiceImpl implements IContractService{
         if (contract.getStatus() != contractDto.getStatus()){
             contract.setStatus(contractDto.getStatus());
         }
-
+       System.out.println(contract);
         return contractRepository.save(contract);
     }
 

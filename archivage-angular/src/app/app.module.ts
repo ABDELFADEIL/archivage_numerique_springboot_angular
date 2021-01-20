@@ -33,6 +33,7 @@ import { UpdateClassificationNatureComponent } from './classification-nature/upd
 import { UpdateAccountComponent } from './update-account/update-account.component';
 import { UpdateContractComponent } from './update-contract/update-contract.component';
 import { UpdateClientComponent } from './update-client/update-client.component';
+import {DatePipe} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,7 @@ import { UpdateClientComponent } from './update-client/update-client.component';
 
     ],
   providers: [Title, { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }, DatePipe
   ],
   bootstrap: [AppComponent],
   entryComponents: [

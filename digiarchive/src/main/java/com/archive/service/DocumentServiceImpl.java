@@ -62,16 +62,29 @@ public class DocumentServiceImpl implements IDocumentService{
     @Override
     public DigitalDocumentEntity add(DocumentDto documentDto)
     {
+         ClassificationNatureEntity classificationNatureEntity = null;
         final CustomerEntity customerEntity = customerService.findById(documentDto.getContextDtoIn().getCustomerId());
          AccountEntity accountEntity = null;
         if(documentDto.getContextDtoIn().getAccountId() != null){
-             accountEntity = accountService.findById(documentDto.getContextDtoIn().getAccountId());
+            Integer accountId = documentDto.getContextDtoIn().getAccountId();
+            accountEntity = accountService.findById(accountId);
+            List<DigitalDocumentEntity> docsAccountById = digitalDocumentRepository.getDocsAccountById(accountId);
+            if(docsAccountById.size() > 0){
+                classificationNatureEntity = docsAccountById.get(0).getContext().getClassification_nature();
+            }
         }
         ContractEntity contractEntity = null;
         if(documentDto.getContextDtoIn().getContractId() != null){
-              contractEntity = contractService.findById(documentDto.getContextDtoIn().getContractId());
+            Integer contractId = documentDto.getContextDtoIn().getContractId();
+            contractEntity = contractService.findById(contractId);
+            List<DigitalDocumentEntity> docsContractById = digitalDocumentRepository.getDocsContractById(contractId);
+            if (docsContractById.size() > 0){
+                classificationNatureEntity = docsContractById.get(0).getContext().getClassification_nature();
+            }
         }
-        final ClassificationNatureEntity classificationNatureEntity = classificationNatureService.findById(documentDto.getContextDtoIn().getClassification_natureId());
+        if (classificationNatureEntity == null){
+            classificationNatureEntity = classificationNatureService.findById(documentDto.getContextDtoIn().getClassification_natureId());
+        }
         final EventEntity eventEntity = eventService.add(documentDto.getContextDtoIn().getEventType());
         Set<EventEntity> eventEntitySet = new HashSet<>();
         eventEntitySet.add(eventEntity);
@@ -91,6 +104,7 @@ public class DocumentServiceImpl implements IDocumentService{
 
         DigitalDocumentEntity digitalDocumentEntity = new DigitalDocumentEntity(documentDto.getFile_name(), "file",
                 documentDto.getEncodedDoc(), context );
+        System.out.println(digitalDocumentEntity);
         return digitalDocumentRepository.save(digitalDocumentEntity);
     }
 

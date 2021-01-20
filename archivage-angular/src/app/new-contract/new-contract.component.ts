@@ -15,6 +15,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {Account} from '../models/account';
 import {DocumentService} from '../service/document.service';
 import {DocumentDto} from '../models/documentDto';
+import {DatePipe, formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-new-contract',
@@ -28,10 +29,10 @@ export class NewContractComponent implements OnInit {
   public modelDep;
   client: Client;
   public classificationNatures: ClassificationNature [] = [];
-  public created: boolean;
+  public created: boolean = false;
   public clientId: number;
   final_business_processing_date: any;
-  public contract: ContractDto;
+  public contract: any;
   client_name: string;
   client_number: number;
   clients: Client [] = [];
@@ -44,9 +45,13 @@ export class NewContractComponent implements OnInit {
   public keyword;
   chercher: boolean =false;
   create: boolean= false;
+  documents :any = []
   contractDto: ContractDto;
   constructor(private contractService: ContractService, private clientService: ClientService,
-              private router: Router, private classificationNatureService: ClassificationNatureService, public documentService: DocumentService) { }
+              private router: Router, private classificationNatureService: ClassificationNatureService,
+              public documentService: DocumentService,
+              private datePipe: DatePipe
+             ) { }
 
   ngOnInit(): void {
       this.client = this.clientService.client;
@@ -64,6 +69,7 @@ export class NewContractComponent implements OnInit {
     console.log(this.contractDto.contract_id_type_code);
     console.log(this.contractDto);
     const contract = await this.contractService.createContract(this.contractDto);
+    this.contract = await contract;
     console.log(contract)
     return contract;
   }
@@ -73,21 +79,36 @@ export class NewContractComponent implements OnInit {
     console.log(documentsDto)
     documentsDto.forEach(document => {
       document.contextDtoIn.contractId = contract.id;
+      let date = new Date(this.form.value.final_business_processing_date);
+      this.datePipe.transform(date, 'yyyy-MM-dd HH:mm:ss');
+      // const finalDate = formatDate(date, "yyyy-MM-dd HH:mm:ss", "en-US")
+      console.log(date)
+      document.contextDtoIn.final_business_processing_date = date;
     })
     console.log(documentsDto);
     let documents:any = null;
     setTimeout(async () =>  {
       documents = await this.documentService.addDocuments(documentsDto);
       console.log(documents)
+      this.documents = await documents;
     }, 1000);
     this.documentService.files = []
     return documents;
   }
   async onSubmit() {
+    let documents : any = null;
     const contract:any = await this.addContract();
     console.log(contract)
-    const documents = await this.addCocuments(contract);
-   return documents;
+   this.addCocuments(contract).then(res => {
+       this.created = true;
+       this.documentService.files = [];
+       console.log(res)
+
+   }).catch(error => {
+     this.created = false;
+     console.log(error);
+   })
+
   }
 
   getClassificationNature() {

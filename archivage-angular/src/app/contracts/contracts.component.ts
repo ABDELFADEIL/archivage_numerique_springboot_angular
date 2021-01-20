@@ -8,6 +8,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Account} from '../models/account';
 import {UpdateAccountComponent} from '../update-account/update-account.component';
 import {UpdateContractComponent} from '../update-contract/update-contract.component';
+import {DocumentService} from '../service/document.service';
 
 @Component({
   selector: 'app-contracts',
@@ -18,7 +19,7 @@ export class ContractsComponent implements OnInit {
   public title = "Contrats"
   public contract_number: string;
   public chercher: boolean = false;
-  public contracts: ContractDto [] =  [];
+  public contracts: any [] =  [];
   public page : number = 1;
   public size : number= 12;
   public currentSize : number;
@@ -31,7 +32,13 @@ export class ContractsComponent implements OnInit {
   public client_number;
   private contract: ContractDto;
 
-  constructor(private contractService: ContractService, private router: Router, private clientService: ClientService, private modalService: NgbModal) { }
+  constructor(private contractService: ContractService, private router: Router,
+              private clientService: ClientService, private modalService: NgbModal,
+              public documentService: DocumentService
+             )
+        {
+
+        }
 
   ngOnInit(): void {
   }
@@ -72,7 +79,7 @@ export class ContractsComponent implements OnInit {
   }
 
 
-  openFormModal(contract:ContractDto, action) {
+  openFormModal(contract:any, action) {
     console.log(contract);
     this.contract = contract;
     const modalRef = this.modalService.open(UpdateContractComponent);

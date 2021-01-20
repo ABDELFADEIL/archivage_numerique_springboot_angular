@@ -1,5 +1,6 @@
 package com.archive.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class ContractEntity extends AbstractEntity{
     private String contract_id_type_code;
     @Column(name = "contract_id_type_label", nullable = false)
     private String contract_id_type_label;
+    // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @LazyCollection(LazyCollectionOption.TRUE)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
@@ -33,7 +35,7 @@ public class ContractEntity extends AbstractEntity{
     @Column(name = "contract_number", nullable = false)
     private String contract_number;
     @Column(name = "creating_date", nullable = false)
-    private LocalDate creating_date;
+    private LocalDateTime creating_date;
     @Column(name = "user_id", nullable = false)
     private Integer user_id;
     @Column(name = "status", nullable = false)

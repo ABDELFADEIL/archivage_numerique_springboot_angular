@@ -20,11 +20,8 @@ export class AccountService {
     return this.httpClient.get<Account[]>(environment.apiUrl+"/account/get-accounts-by-client-name-account-number?account_number="+account_number+"&client_name="+client_name);
   }
 
-  addDocsToAccount(form: FormData) {
-    return this.httpClient.put(environment.apiUrl+"/account/update-account-docs", form);
-  }
 
-  update(account: Account) {
-    return this.httpClient.put(environment.apiUrl+"/account/create-event-account", account);
+  update(accountDto: AccountDto) {
+    return this.httpClient.put(environment.apiUrl+"/account/update", accountDto);
   }
 }

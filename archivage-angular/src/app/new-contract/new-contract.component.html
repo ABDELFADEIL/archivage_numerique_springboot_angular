@@ -110,8 +110,8 @@
               <select formControlName="contract_id_type_code"  class="form-control">
                 <option value="">select...</option>
                 <option value="CAH">Contrats d'assurance habitation</option>
-                <option value="AV">Assurance vie</option>
-                <option value="AHP">Assurance habitation professionnelle</option>
+                <option value="CAV">Assurance vie</option>
+                <option value="CAHP">Assurance habitation professionnelle</option>
                 <option value="ADI">Assurance décès invalidité</option>
                 <option value="AA">Assurance automobile</option>
                 <option value="APJ">Assurance protection juridique</option>
@@ -173,7 +173,7 @@
     </form>
   </div>
 
-  <div *ngIf="client && created" class="container spacer">
+  <div *ngIf="created" class="container spacer">
     <div >
       <h2 class="text-center text-lg-center text-primary" style="font-weight: normal">Création d'un nouveau contract avec succès!</h2>
       <div  *ngIf="client && created">
@@ -182,7 +182,7 @@
           <p><span class="h6">Prénom: </span> {{client.client_first_name}}</p>
           <p><span class="h6">Type de contract: </span> {{contract.contract_id_type_label}}</p>
           <p><span class="h6">Numéro contrat: </span> {{ contract.contract_number }}</p>
-          <p><span class="h6">Date fin contrat: </span> {{final_business_processing_date | date : 'mediumDate'  : 'locale'  }}</p>
+          <p *ngIf="documents.length > 0"><span class="h6">Date fin contrat: </span> {{documents[0].context.final_business_processing_date | date : 'mediumDate'  : 'locale'  }}</p>
         </div>
       </div>
       <div class=" spacer">

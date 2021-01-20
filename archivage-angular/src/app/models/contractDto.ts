@@ -8,5 +8,6 @@ export class ContractDto {
     contract_number : string;
     creating_date : Date;
     status:string;
+  id: number;
 
 }

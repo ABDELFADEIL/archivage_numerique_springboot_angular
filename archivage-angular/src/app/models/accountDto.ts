@@ -8,5 +8,6 @@ export class AccountDto {
   customerId: number;
   creating_date: Date;
   status: number;
+  id: number;
 
 }

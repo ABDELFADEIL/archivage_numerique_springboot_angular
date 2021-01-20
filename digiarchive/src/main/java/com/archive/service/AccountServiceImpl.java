@@ -39,14 +39,14 @@ public class AccountServiceImpl implements IAccountService{
         CustomerEntity customerEntity = customerService.findById(accountDto.getCustomerId());
         String account_number = createNewAccountNumber();
         AccountEntity accountEntity = new AccountEntity( accountDto.getAccount_id_type_code(),  accountDto.getAccount_id_type_label(),
-                account_number, customerEntity, LocalDate.now(), user.getId(), EventStatus.START_CUSTOMER_RELATIONSHIP);
+                account_number, customerEntity, LocalDateTime.now(), user.getId(), EventStatus.START_CUSTOMER_RELATIONSHIP);
 
         return accountRepository.save(accountEntity);
     }
 
     @Override
     public AccountEntity update(AccountDto accountDto) {
-
+        EventStatus eventStatus = accountDto.getStatus();
         AccountEntity account = findById(accountDto.getId());
         if (account == null) throw new RuntimeException( "id does not existe");
 

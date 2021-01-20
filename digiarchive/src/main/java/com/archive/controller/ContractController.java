@@ -10,6 +10,8 @@ import com.archive.service.IContractService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 
 @RestController
 @RequestMapping("/contract")
@@ -38,5 +40,12 @@ public class ContractController {
         return contractService.update(contractDto);
     }
     // get-contracts-by-client-name-number
+
+    @GetMapping("/get-contracts-by-client-name-contract-number")
+    public Set<ContractEntity> getContractsByClientNameAndAccountNumberContains(
+            @RequestParam(value = "contract_number") String contract_number,
+            @RequestParam(value = "client_name") String client_name) {
+        return contractService.getContractsByClientNameAndContractNumberContains(client_name, contract_number);
+    }
 
 }
