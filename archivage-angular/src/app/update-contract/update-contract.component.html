@@ -54,8 +54,17 @@
                 <label  class="col-form-label float-right">Statut de contract</label>
               </div>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="status" [(ngModel)]="contract.status">
-              </div>
+            <!--    <input type="text" class="form-control" name="status" [(ngModel)]="contract.status"> -->
+                  <div class=" row">
+                    <div class="col-sm-12">
+                      <select name="satus"  class="form-control" [(ngModel)]="contract.status">
+                        <option *ngFor="let eventType of eventTypes | keyvalue" [value]="eventType.value">{{eventType.value}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+
 
             </div>
           </div>

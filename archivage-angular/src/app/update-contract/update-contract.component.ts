@@ -8,6 +8,7 @@ import {ContractService} from '../service/contract.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DocumentService} from '../service/document.service';
 import {DocumentDto} from '../models/documentDto';
+import {EventType} from '../models/eventType';
 
 @Component({
   selector: 'app-update-contract',
@@ -21,6 +22,7 @@ export class UpdateContractComponent implements OnInit {
 
   @Input()  contract: any;
   @Input()  action: string;
+  eventTypes =  EventType;
   constructor(public activeModal: NgbActiveModal,
               private contractService: ContractService,
               private router : Router,

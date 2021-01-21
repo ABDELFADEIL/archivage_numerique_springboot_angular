@@ -4,6 +4,7 @@ import {ClientService} from '../service/client.service';
 import {ContractDto} from '../models/contractDto';
 import {Client} from '../models/client';
 import {Router} from '@angular/router';
+import {EventType} from '../models/eventType';
 
 @Component({
   selector: 'app-update-client',
@@ -12,6 +13,7 @@ import {Router} from '@angular/router';
 })
 export class UpdateClientComponent implements OnInit {
   @Input()  client: Client;
+  eventTypes: any = EventType;
 
   constructor(public activeModal: NgbActiveModal, private clientService:ClientService, private router: Router) { }
 

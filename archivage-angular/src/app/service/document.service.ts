@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ClassificationNature} from '../models/classification-nature';
 import {environment} from '../environment';
 import {Document} from '../models/document';
 import {DocumentDto} from '../models/documentDto';
+import {EventType} from '../models/eventType';
+import {Event} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -83,9 +85,22 @@ export class DocumentService {
     return this.httpClient.delete(environment.apiUrl+ "/document/delete-one?docID="+id);
   }
 
-  getAllDocsEventTypeBeforeDate(since: string) {
-    return this.httpClient.get<any[]>(environment.apiUrl+"/document/search-docs-fbpd-null-since?since="+since);
 
+
+  async getArchivedDocumentsBetweenDateAfterAndDateBefore(dateBefore:Date, dateAfter: Date, eventType:EventType) {
+    let headerss = new Headers({
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    });
+    /*let headers = new Headers({
+      "Content-Type": "application/json",
+    });
+    return await fetch(environment.apiUrl+"/document/getDocumentsBetweenDateAfterAndDateBefore?dateAfter="+dateAfter+"&dateBefore="+dateBefore+"&eventType="+eventType,{ method: 'GET',
+      headers: headers});
+*/
+    return this.httpClient.get(environment.apiUrl+"/document/getDocumentsBetweenDateAfterAndDateBefore?dateAfter="
+      +dateAfter+"&dateBefore="+dateBefore+"&eventType="+eventType, {
+      observe: 'body', headers:new HttpHeaders({"Content-Type": "application/json", "Accept": "application/json"})})
+      .toPromise();
   }
-
 }

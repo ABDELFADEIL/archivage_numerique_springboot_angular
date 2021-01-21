@@ -3,14 +3,15 @@ package com.archive.controller;
 
 import com.archive.dto.DocumentDto;
 import com.archive.entity.DigitalDocumentEntity;
+import com.archive.entity.EventStatus;
 import com.archive.service.IDocumentService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RestController
 @RequestMapping("/document")
@@ -36,7 +37,26 @@ public class DocumentController {
     }
 
 
+    @RequestMapping( method = RequestMethod.GET ,value = "/getDocumentsBetweenDateAfterAndDateBefore", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<DigitalDocumentEntity> getDocumentsBetweenDateAfterAndDateBefore(
+            @RequestParam(name = "dateBefore") String dateAfter,
+            @RequestParam(name = "dateAfter") String dateBefore,
+            @RequestParam(name = "eventType") String eventType
+                                                                               )
+    {
+       // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateAfterFromated = null;
+        LocalDateTime dateBeforeFromated = null;
+        try {
+             dateAfterFromated = LocalDateTime.parse(dateAfter);
+             dateBeforeFromated = LocalDateTime.parse(dateBefore);
+        }catch(Exception e){
+            System.out.println("Error parseing !");
+        }
+        List<DigitalDocumentEntity>  documentEntities = null;
+        return documentService.getDocumentsBetweenDateAfterAndDateBefore(dateAfterFromated, dateBeforeFromated, eventType);
 
+    }
 
 
 

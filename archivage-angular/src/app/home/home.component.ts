@@ -36,38 +36,16 @@ export class HomeComponent implements OnInit {
     this.create = false;
   }
 
-  onSubmit(client_name, client_number) {
 
+  getAllClients() {
     this.chercher = true
-    if (client_name==''){
-      this.client_name = '';
-    } else{
-      this.client_name = client_name
-    }
-    if (client_number == ''){
-      this.client_number = '';
-    }else {
-      this.client_number = client_number;
-    }
-
-    console.log(client_name)
-    console.log(client_number)
-
-    this.clientService.searchClientByNameOrNumberClient(client_name, client_number).subscribe(data => {
+    this.clientService.searchClientByNameOrNumberClient(this.client_name, this.client_number).subscribe(data => {
       console.log(data)
       this.clients = data;
       this.clientService.client = this.client;
     }, error => {
       console.log(error)
     })
-  }
-
-
-
-
-
-  getAllClients() {
-    this.onSubmit(this.client_name, this.client_number);
   }
 
   onAddAccountOrContract(c: Client) {
@@ -96,5 +74,31 @@ export class HomeComponent implements OnInit {
     }).catch((error) => {
       console.log(error);
     });
+  }
+
+  onSubmit(client_name, client_number) {
+
+    this.chercher = true
+    if (client_name==''){
+      this.client_name = null;
+    } else{
+      this.client_name = client_name
+    }
+    if (client_number == ''){
+      this.client_number = null;
+    }else {
+      this.client_number = client_number;
+    }
+
+    console.log(client_name)
+    console.log(client_number)
+
+    this.clientService.searchClientByNameOrNumberClient(this.client_name, this.client_number).subscribe(data => {
+      console.log(data)
+      this.clients = data;
+      this.clientService.client = this.client;
+    }, error => {
+      console.log(error)
+    })
   }
 }

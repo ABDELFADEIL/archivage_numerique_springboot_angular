@@ -4,11 +4,13 @@ package com.archive.service;
 import com.archive.dao.AccountRepository;
 import com.archive.dto.AccountDto;
 import com.archive.entity.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -18,12 +20,13 @@ public class AccountServiceImpl implements IAccountService{
     private final AccountRepository accountRepository;
     private final ICustomerService customerService;
     private final IUserService userService;
+    private final IDocumentService documentService;
 
-    public AccountServiceImpl(AccountRepository accountRepository, ICustomerService customerService, IUserService userService) {
+    public AccountServiceImpl(AccountRepository accountRepository, ICustomerService customerService, IUserService userService, @NonNull @Lazy IDocumentService documentService) {
         this.accountRepository = accountRepository;
         this.customerService = customerService;
-
         this.userService = userService;
+       this.documentService = documentService;
     }
 
     @Override
@@ -58,6 +61,7 @@ public class AccountServiceImpl implements IAccountService{
         }
         if (account.getStatus() != accountDto.getStatus()){
             account.setStatus(accountDto.getStatus());
+            documentService.addEvent(null, account.getId(), null, account.getStatus());
         }
 
         return accountRepository.save(account);
@@ -107,7 +111,7 @@ public class AccountServiceImpl implements IAccountService{
     public String createNewAccountNumber() {
 
         Random random = new Random();
-        String account_number_nex = random.nextLong()+"";
+        String account_number_nex = random.nextInt( Integer.MAX_VALUE)+100000+""+"";
         return account_number_nex;
     }
 }

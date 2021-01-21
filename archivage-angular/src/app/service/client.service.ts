@@ -36,6 +36,6 @@ export class ClientService {
   }
 
   update(client: Client) {
-   return this.httpClient.put(environment.apiUrl+"/customer/create-event-client", client);
+   return this.httpClient.put(environment.apiUrl+"/customer/update", client);
   }
 }

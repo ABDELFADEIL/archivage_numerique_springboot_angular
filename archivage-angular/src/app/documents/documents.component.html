@@ -8,12 +8,21 @@
           <p class="col-form-label">Rechercher pour mettre à jour la DFBM</p>
        </div>
     <div class="col-sm-12">
-    <form (ngSubmit)="getAllDocsEventTypeBeforeDate(since)">
-    <div class="row form-group">
-       <div class="col-sm-4">
-          <input type="datetime-local" class="form-control" name="since" [(ngModel)]="since">
+    <form (ngSubmit)="getArchivedDocumentsBetweenDateAfterAndDateBefore()">
+    <div class="row form-group justify-content-sm-start">
+      <div class=" mr-0">
+        <p>De</p>
+      </div>
+       <div class="col-sm-3 ml-0">
+          <input type="datetime-local" class="form-control" name="dateAfter" [(ngModel)]="dateAfter">
        </div>
-      <button class="btn btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+      <div class="mr-0">
+        <p>à</p>
+      </div>
+      <div class="col-sm-3 ml-0">
+        <input type="datetime-local" class="form-control" name="dateBfore" [(ngModel)]="dateBfore">
+      </div>
+      <button  class="btn btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
     </div>
     </form>
 

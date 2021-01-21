@@ -6,6 +6,8 @@ import com.archive.dto.CustomerDto;
 import com.archive.entity.CustomerEntity;
 import com.archive.entity.EventStatus;
 import com.archive.entity.UserEntity;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -17,12 +19,13 @@ public class CustomerServiceImpl implements ICustomerService{
     private final CustomerRepository customerRepository;
     private final IUserService userService;
     private final IEventService eventService;
+    private final IDocumentService documentService;
 
-
-    public CustomerServiceImpl(CustomerRepository customerRepository, IUserService userService, IEventService eventService) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, IUserService userService, IEventService eventService, @NonNull @Lazy IDocumentService documentService) {
         this.customerRepository = customerRepository;
         this.userService = userService;
         this.eventService = eventService;
+        this.documentService = documentService;
     }
 
 
@@ -69,6 +72,7 @@ public class CustomerServiceImpl implements ICustomerService{
         }
         if (customerDto.getStatus() != customerEntity.getStatus()){
             customerEntity.setStatus(customerDto.getStatus());
+            documentService.addEvent(customerEntity.getId(), null, null, customerDto.getStatus());
         }
 
         return customerRepository.save(customerEntity);

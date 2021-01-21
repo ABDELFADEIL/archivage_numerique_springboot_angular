@@ -7,6 +7,8 @@ import com.archive.entity.ContractEntity;
 import com.archive.entity.CustomerEntity;
 import com.archive.entity.EventStatus;
 import com.archive.entity.UserEntity;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,12 +22,13 @@ public class ContractServiceImpl implements IContractService{
     private final ContractRepository contractRepository;
     private final ICustomerService customerService;
     private final IUserService userService;
+    private final IDocumentService documentService;
 
-
-    public ContractServiceImpl(ContractRepository contractRepository, ICustomerService customerService, IUserService userService) {
+    public ContractServiceImpl(ContractRepository contractRepository, ICustomerService customerService, IUserService userService, @NonNull @Lazy IDocumentService documentService) {
         this.contractRepository = contractRepository;
         this.customerService = customerService;
         this.userService = userService;
+        this.documentService = documentService;
     }
 
 
@@ -61,6 +64,7 @@ public class ContractServiceImpl implements IContractService{
         }
         if (contract.getStatus() != contractDto.getStatus()){
             contract.setStatus(contractDto.getStatus());
+            documentService.addEvent(null, null, contract.getId(), contractDto.getStatus());
         }
        System.out.println(contract);
         return contractRepository.save(contract);
@@ -106,7 +110,7 @@ public class ContractServiceImpl implements IContractService{
     @Override
     public String createNewContractNumber() {
         Random random = new Random();
-        String contract_number_nex = random.nextLong()+"";
+        String contract_number_nex = random.nextInt( Integer.MAX_VALUE)+100000+"";
         return contract_number_nex;
     }
 

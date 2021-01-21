@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {DocumentService} from '../service/document.service';
 import { observe } from "rxjs-observe";
 import {Document} from '../models/document';
+import {EventType} from '../models/eventType';
 
 
 @Component({
@@ -22,7 +23,9 @@ export class DocumentsComponent implements OnInit {
   selectedDocuments: any[] = [];
   documents: any[] = [];
   selectedAll = 'All';
-  since;
+  dateBfore:Date;
+  dateAfter: Date;
+  eventType:EventType = EventType.START_CUSTOMER_RELATIONSHIP
 
   constructor(private documentService: DocumentService) {
    // this.getAllDocsEventTypeBeforeDate(this.since);
@@ -32,12 +35,13 @@ export class DocumentsComponent implements OnInit {
     //this.getAllDocsEventTypeBeforeDate(this.since);
   }
 
-  getAllDocsEventTypeBeforeDate(since){
-    console.log(since)
-    this.documentService.getAllDocsEventTypeBeforeDate(since).
-    subscribe(value => {
-      console.log(value);
+
+ async getArchivedDocumentsBetweenDateAfterAndDateBefore(){
+    console.log(this.dateBfore, this.dateAfter, this.eventType);
+    this.documentService.getArchivedDocumentsBetweenDateAfterAndDateBefore(this.dateAfter, this.dateBfore, this.eventType).
+    then((value:any) => {
       this.documents = value;
+      console.log(value);
       // this.totalPages=value["totalPages"];
       // this.pages= new Array<number>(this.totalPages);
       // this.documents = value;
@@ -57,7 +61,7 @@ export class DocumentsComponent implements OnInit {
       console.log(formdata)
       this.documentService.updateDFBM(formdata).subscribe(data => {
         console.log(data);
-        this.getAllDocsEventTypeBeforeDate(this.since);
+        this.getArchivedDocumentsBetweenDateAfterAndDateBefore();
       }, error => {
         console.log(error);
       })
@@ -123,4 +127,6 @@ export class DocumentsComponent implements OnInit {
       this.documents.splice(1, 1)
     }
   }
+
+
 }

@@ -27,14 +27,14 @@ import java.util.Set;
 public class DocumentServiceImpl implements IDocumentService{
 
 
-    private final DigitalDocumentRepository digitalDocumentRepository;
-    private final IContextService contextService;
-    private final ICustomerService customerService;
-    private final IAccountService accountService;
-    private final IContractService contractService;
-    private final IUserService userService;
-    private final IClassificationNatureService classificationNatureService;
-    private final IEventService eventService;
+    private  DigitalDocumentRepository digitalDocumentRepository;
+    private  IContextService contextService;
+    private  ICustomerService customerService;
+    private  IAccountService accountService;
+    private  IContractService contractService;
+    private  IUserService userService;
+    private  IClassificationNatureService classificationNatureService;
+    private  IEventService eventService;
 
 
 
@@ -165,6 +165,38 @@ public class DocumentServiceImpl implements IDocumentService{
         return document;
     }
 
+    @Override
+    public List<DigitalDocumentEntity> addEvent(Integer customerId, Integer accountId, Integer contractId, EventStatus status) {
+        List<DigitalDocumentEntity> documents = new ArrayList<>();
+        if (accountId != null){
+            documents = digitalDocumentRepository.getDocsAccountById(accountId);
+            documents.forEach( document -> {
+                final EventEntity newEvent = eventService.add(status.getValue());
+                document.getContext().getEvents().add(newEvent);
+                contextService.add(document.getContext());
+            });
+        }
+        if (contractId != null){
+            documents = digitalDocumentRepository.getDocsContractById(contractId);
+            documents.forEach( document -> {
+                final EventEntity newEvent = eventService.add(status.getValue());
+                document.getContext().getEvents().add(newEvent);
+                contextService.add(document.getContext());
+            });
+        }
+
+        if (customerId != null && contractId == null && accountId == null){
+            documents = digitalDocumentRepository.getCustomerDocsByCustomerIdAndContratAndAccountIsNull(customerId);
+            documents.forEach( document -> {
+                final EventEntity newEvent = eventService.add(status.getValue());
+                document.getContext().getEvents().add(newEvent);
+                contextService.add(document.getContext());
+            });
+        }
+
+        return documents;
+    }
+
 
     @Override
     public DigitalDocumentEntity getById(Integer documentId) {
@@ -217,5 +249,11 @@ public class DocumentServiceImpl implements IDocumentService{
     @Override
     public DigitalDocumentEntity save(DigitalDocumentEntity documentEntity) {
         return digitalDocumentRepository.save(documentEntity);
+    }
+
+    @Override
+    public List<DigitalDocumentEntity> getDocumentsBetweenDateAfterAndDateBefore(LocalDateTime dateAfter, LocalDateTime dateBefore, String eventType) {
+
+        return digitalDocumentRepository.getDocumentsBetweenDateAfterAndDateBefore(dateAfter, dateBefore, EventStatus.valueOf(eventType).getValue());
     }
 }

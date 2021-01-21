@@ -54,7 +54,7 @@ public class CustomerController {
         return new ResponseEntity<CustomerEntity>(customerEntity, HttpStatus.OK);
     }
 
-    @PutMapping("update-customer")
+    @PutMapping("update")
     public CustomerEntity updateCustomer(@RequestBody(required = true) CustomerDto customerDto) {
         return customerService.update(customerDto);
     }

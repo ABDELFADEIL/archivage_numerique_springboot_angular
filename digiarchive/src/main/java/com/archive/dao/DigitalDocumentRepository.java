@@ -15,6 +15,7 @@ import com.archive.entity.UserEntity;
 import javax.persistence.QueryHint;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.hibernate.jpa.QueryHints.HINT_FETCH_SIZE;
@@ -48,6 +49,11 @@ public interface DigitalDocumentRepository extends JpaRepository<DigitalDocument
 
     @Query(value = "select doc.* from document doc WHERE doc.context_id in (select c.id from context c INNER JOIN event e On e.id=c.event WHERE c.customer_id=:client_id AND e.status=:eventType AND c.account_id IS NULL AND c.contract_id IS NULL)", nativeQuery = true)
     List<DigitalDocumentEntity> findByEventTypeAndClientId(@Param("eventType") String eventType, @Param("client_id") String client_id);
-
+    @Query(value = "select document from DigitalDocumentEntity document where document.context.customer.id=:customerId and document.context.contract.id is null and document.context.account.id is null ")
+    List<DigitalDocumentEntity> getCustomerDocsByCustomerIdAndContratAndAccountIsNull(@Param("customerId") Integer customerId);
+    @Query(value = "SELECT doc.* FROM document doc, context cx WHERE doc.context_id=cx.id and cx.final_business_processing_date IS NULL " +
+            "and cx.archiving_reference_date BETWEEN :dateAfter and :dateBefore and cx.id in " +
+            "(SELECT cx.id FROM context cx, event e JOIN event_context ec ON ec.context_id=cx.id WHERE e.status=:eventType)", nativeQuery = true)
+    List<DigitalDocumentEntity> getDocumentsBetweenDateAfterAndDateBefore(@Param("dateAfter") LocalDateTime dateAfter, @Param("dateBefore") LocalDateTime dateBefore, @Param("eventType") Byte eventType);
     // List<DigitalDocumentEntity> getDocumentDfbmIsNullArchivingDateBefore(LocalDateTime dateBefore);
 }

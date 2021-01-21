@@ -10,6 +10,7 @@ import {DocumentService} from '../service/document.service';
 import {ContractDto} from '../models/contractDto';
 import {AccountDto} from '../models/accountDto';
 import {DocumentDto} from '../models/documentDto';
+import {EventType} from '../models/eventType';
 
 @Component({
   selector: 'app-update-account',
@@ -64,6 +65,7 @@ export class UpdateAccountComponent implements OnInit {
 
 
   docs: boolean=false;
+  eventTypes = EventType;
 
 
 
